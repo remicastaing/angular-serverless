@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ProfileComponent } from './profile/profile.component';
+import {requestOptionsProvider} from './default-request-options.service'
 
 const routes = [
   {path: '', component: HomeComponent}, // load the home route by default
@@ -24,7 +26,8 @@ const routes = [
     HomeComponent,
     SigninComponent,
     SignupComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,7 @@ const routes = [
     RouterModule.forRoot(routes),
     NgbModule.forRoot(),
   ],
-  providers: [],
+  providers: [requestOptionsProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
