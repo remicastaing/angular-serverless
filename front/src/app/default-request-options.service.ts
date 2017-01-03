@@ -9,9 +9,7 @@ export class DefaultRequestOptions extends BaseRequestOptions {
 
     // Set the default 'Content-Type' header
     this.headers.set('Content-Type', 'application/json');
-    console.log('intercept');
     if (localStorage.getItem('auth_token')) {
-    	console.log(localStorage.getItem('auth_token'));
 			let authToken = localStorage.getItem('auth_token');
     	this.headers.append('Authorization', `Bearer ${authToken}`);
     }
