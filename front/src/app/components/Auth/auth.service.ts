@@ -30,9 +30,10 @@ export class AuthService {
         console.log(res);
         localStorage.setItem('auth_token', res.token);
         this.loggedIn = true;
-        console.log(this.userService.getMe());
+        this.userService.getMe();
       });
   }
+
   
   logout() {
     localStorage.removeItem('auth_token');

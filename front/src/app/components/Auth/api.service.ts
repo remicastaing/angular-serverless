@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Http, XHRBackend, RequestOptions, Request, RequestOptionsArgs, Response, Headers} from '@angular/http';
+import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class APIService extends Http {
+	
 
-  constructor (backend: XHRBackend, options: RequestOptions) {
-    let token = localStorage.getItem('auth_token'); // your custom token getter function here
-    options.headers.set('Authorization', `Bearer ${token}`);
+  constructor (backend: XHRBackend, options: RequestOptions, private _router: Router) {
     super(backend, options);
   }
 
@@ -21,9 +21,11 @@ export class APIService extends Http {
         options = {headers: new Headers()};
       }
       options.headers.set('Authorization', `Bearer ${token}`);
+      options.headers.append('Content-Type', 'application/json');
     } else {
     // we have to add the token to the url object
       url.headers.set('Authorization', `Bearer ${token}`);
+      url.headers.append('Content-Type', 'application/json');
     }
     return super.request(url, options).catch(this.catchAuthError(this));
   }
@@ -34,6 +36,7 @@ export class APIService extends Http {
       console.log(res);
       if (res.status === 401 || res.status === 403) {
         // if not authenticated
+        this._router.navigate(['/login']);
         console.log(res);
       }
       return Observable.throw(res);
@@ -41,12 +44,12 @@ export class APIService extends Http {
   }
 }
 
-export function APIServiceFactory(backend: XHRBackend, options: RequestOptions) {
-        return new APIService(backend, options);
+export function APIServiceFactory(backend: XHRBackend, options: RequestOptions,  _router: Router) {
+        return new APIService(backend, options, _router);
       }
 
 export const APIServiceProvider ={
       provide: APIService,
       useFactory: APIServiceFactory,
-      deps: [XHRBackend, RequestOptions]
+      deps: [XHRBackend, RequestOptions, Router]
     }
