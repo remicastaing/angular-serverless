@@ -11,12 +11,20 @@
 				    <img src="/assets/flash.svg" width="30" height="30" class="d-inline-block align-top" alt="">
 				    Angular-Serverless
 				  </a>
-				  <ul class="nav navbar-nav float-xs-right">
+				  <ul class="nav navbar-nav float-xs-left">
 				    <li class="nav-item active">
 				      <a class="nav-link" routerLink="home" RouterLinkActive="active">Home <span class="sr-only">(current)</span></a>
 				    </li>
 				    <li class="nav-item">
-				      <a class="nav-link" routerLink="signin" RouterLinkActive="active">Sign In</a>
+				      <a class="nav-link" routerLink="signin" RouterLinkActive="active">Login</a>
+				    </li>
+				    <li class="nav-item">
+				      <a class="nav-link" routerLink="signup" RouterLinkActive="active">Sign Up</a>
+				    </li>
+				  </ul>
+				  <ul class="nav navbar-nav float-xs-right">
+				    <li class="nav-item">
+				      <profile class="nav-link" [profile]="currentUser | async"></profile>
 				    </li>
 				    <li class="nav-item">
 				      <a class="nav-link" routerLink="signup" RouterLinkActive="active">Sign Up</a>
