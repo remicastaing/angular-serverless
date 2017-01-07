@@ -13,6 +13,8 @@ export class AuthService {
 
   constructor(private http: Http, private userService: UserService) {
     this.loggedIn = !!localStorage.getItem('auth_token');
+
+    if (this.loggedIn) userService.getMe();
   }
 
   login(email, password) {

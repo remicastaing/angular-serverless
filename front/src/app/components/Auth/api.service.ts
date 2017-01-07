@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/empty';
 
 @Injectable()
 export class APIService extends Http {
@@ -38,6 +39,8 @@ export class APIService extends Http {
         // if not authenticated
         this._router.navigate(['/login']);
         console.log(res);
+        return Observable.empty();
+
       }
       return Observable.throw(res);
     };
