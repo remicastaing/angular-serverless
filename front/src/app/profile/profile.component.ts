@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from '../components/Auth/user.model';
 
+
 @Component({
   selector: 'profile',
   templateUrl: './profile.component.html',
@@ -13,6 +14,7 @@ export class ProfileComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   	
   }
 

@@ -12,8 +12,9 @@ import { SignupComponent } from './signup/signup.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 //import {requestOptionsProvider} from './default-request-options.service'
-import {APIServiceProvider} from './components/Auth/api.service'
-import {UserService} from './components/Auth/user.service'
+import {APIServiceProvider} from './components/Auth/api.service';
+import {UserService} from './components/Auth/user.service';
+import {AuthService} from './components/Auth/auth.service'
 
 const routes = [
   {path: '', component: HomeComponent}, // load the home route by default
@@ -38,7 +39,7 @@ const routes = [
     RouterModule.forRoot(routes),
     NgbModule.forRoot(),
   ],
-  providers: [APIServiceProvider, UserService],
+  providers: [APIServiceProvider, UserService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

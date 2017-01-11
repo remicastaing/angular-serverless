@@ -27,7 +27,7 @@
 				      <profile class="nav-link" [profile]="currentUser | async"></profile>
 				    </li>
 				    <li class="nav-item">
-				      <a class="nav-link" routerLink="signup" RouterLinkActive="active">Sign Up</a>
+				      <a class="nav-link" (click)="logout()">Logout</a>
 				    </li>
 				  </ul>
       </div>

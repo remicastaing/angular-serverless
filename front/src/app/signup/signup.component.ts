@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { AuthService } from '../components/Auth/auth.service';
 
 @Component({
   selector: 'signup',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
 
+  onSubmit(name, email, password) {
+
+    this.authService.createUser(name, email, password).subscribe((result) => {
+      if (result) {
+        console.log(result);
+        //this.router.navigate(['']);
+      }
+    });
+  }
 }

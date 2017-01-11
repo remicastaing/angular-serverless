@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { User } from '../components/Auth/user.model';
-import {Observable} from 'rxjs';
-import { UserService} from '../components/Auth/user.service';
+import {BehaviorSubject} from 'rxjs';
+import { AuthService} from '../components/Auth/auth.service';
 
 @Component({
   selector: 'navbar',
@@ -11,14 +11,22 @@ import { UserService} from '../components/Auth/user.service';
 })
 export class NavbarComponent implements OnInit {
 	public isCollapsed = true;
-	public currentUser : Observable<User>;
+	public currentUser : BehaviorSubject<User>;
 
-  constructor(private userService: UserService) { 
-  	this.currentUser = userService.currentUser;
+
+  constructor(private auth: AuthService) { 
+    this.currentUser = this.auth.currentUser
+  }
+
+  logout(){
+  	console.log('logout');
+  	this.auth.logout();
   }
 
   ngOnInit() {
-  	//this.currentUser= new User('Admin', 'admin@exemple.com', 'admin');
+
   	}
+
+
 
 }
