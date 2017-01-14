@@ -12,10 +12,13 @@ import { AuthService} from '../components/Auth/auth.service';
 export class NavbarComponent implements OnInit {
 	public isCollapsed = true;
 	public currentUser : BehaviorSubject<User>;
+  public isLoggedIn : BehaviorSubject<Boolean>;
 
 
   constructor(private auth: AuthService) { 
-    this.currentUser = this.auth.currentUser
+    this.currentUser = this.auth.currentUser;
+    this.isLoggedIn = this.auth.isLoggedIn;
+
   }
 
   logout(){

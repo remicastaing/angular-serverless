@@ -15,10 +15,10 @@
 				    <li class="nav-item active">
 				      <a class="nav-link" routerLink="home" RouterLinkActive="active">Home <span class="sr-only">(current)</span></a>
 				    </li>
-				    <li class="nav-item">
+				    <li class="nav-item" *ngIf="!(isLoggedIn | async)">
 				      <a class="nav-link" routerLink="signin" RouterLinkActive="active">Login</a>
 				    </li>
-				    <li class="nav-item">
+				    <li class="nav-item" *ngIf="!(isLoggedIn | async)">
 				      <a class="nav-link" routerLink="signup" RouterLinkActive="active">Sign Up</a>
 				    </li>
 				  </ul>
@@ -26,7 +26,7 @@
 				    <li class="nav-item">
 				      <profile class="nav-link" [profile]="currentUser | async"></profile>
 				    </li>
-				    <li class="nav-item">
+				    <li class="nav-item" *ngIf="(isLoggedIn | async)">
 				      <a class="nav-link" (click)="logout()">Logout</a>
 				    </li>
 				  </ul>
