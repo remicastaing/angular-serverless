@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import {UserService} from './user.service';
 import {User} from './user.model';
 import {APIService} from './api.service';
@@ -15,7 +15,7 @@ export class AuthService {
 
   public currentUser : BehaviorSubject<User>= new BehaviorSubject(null);
 
-  constructor(private api: APIService, private userService: UserService) {
+  constructor(private api: APIService, private http: Http, private userService: UserService) {
     
     console.log('construct');
 
@@ -26,21 +26,19 @@ export class AuthService {
       this.isLoggedIn.next(false);
       this.currentUser.next(null);
     }
-
-    
-
-    // this.currentUser.subscribe({
-    //   next : (v) => {console.log(this.currentUser); }
-    // })
-
     
   }
 
   login(email, password) {
-    return this.api
+
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http
       .post(
         '/api/auth/local', 
-        JSON.stringify({ email, password })
+        JSON.stringify({ email, password }),
+        options
       )
       .map(res => res.json())
       .map((res) => {

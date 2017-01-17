@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { AuthService } from '../components/Auth/auth.service';
-
-class UserForm {
-   constructor(public email?: string,
-               public password?: string) {
-   }
-}
 
 @Component({
   selector: 'signin',
@@ -16,24 +16,42 @@ class UserForm {
 })
 export class SigninComponent implements OnInit {
   public submitted : Boolean = false;
+  errors = {login: undefined};;
 
-  user = new UserForm();
+  signinForm: FormGroup;
+  email: AbstractControl;
+  password: AbstractControl;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  
+
+  constructor(private authService: AuthService, private router: Router, fb: FormBuilder) {
+    this.signinForm = fb.group({
+      'email': ['', Validators.compose([
+        Validators.required, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)])],
+      'password': ['', Validators.compose([Validators.required, Validators.minLength(3)])]
+    });
+    this.email = this.signinForm.controls['email'];
+    this.password = this.signinForm.controls['password'];
+  }
 
   ngOnInit() {
   }
 
   onSubmit(form) {
     this.submitted = true;
-
-    if (form.form.valid){
-      this.authService.login(form.form.value.email, form.form.value.password).subscribe((result) => {
-        if (result) {
-          console.log(result);
-          this.router.navigate(['']);
-        }
-      });      
+    console.log([form.value.email, form.value.password]);
+    if (form.valid){
+      this.authService.login(form.value.email, form.value.password).subscribe(
+        (result) => {
+          if (result) {
+            console.log(result);
+            this.router.navigate(['']);
+          }
+        },
+        (result) => {
+          console.log(result.json());
+          this.errors.login = result.json().message;
+        });      
     }
 
   }
