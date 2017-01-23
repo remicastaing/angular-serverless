@@ -37,8 +37,8 @@ export class APIService extends Http {
       console.log(res);
       if (res.status === 401 || res.status === 403) {
         // if not authenticated
-        this._router.navigate(['/login']);
-        console.log(res);
+        this._router.navigate(['signin']);
+
         return Observable.empty();
 
       }

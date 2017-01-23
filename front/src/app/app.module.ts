@@ -17,13 +17,15 @@ import { ProfileComponent } from './profile/profile.component';
 //import {requestOptionsProvider} from './default-request-options.service'
 import {APIServiceProvider} from './components/Auth/api.service';
 import {UserService} from './components/Auth/user.service';
-import {AuthService} from './components/Auth/auth.service'
+import {AuthService} from './components/Auth/auth.service';
+import { SettingsComponent } from './settings/settings.component'
 
 const routes = [
   {path: '', component: HomeComponent}, // load the home route by default
   {path: 'home', component: HomeComponent},
   {path: 'signup', component: SignupComponent},
-  {path: 'signin', component: SigninComponent}
+  {path: 'signin', component: SigninComponent},
+  {path: 'settings', component: SettingsComponent}
 ];
 
 @NgModule({
@@ -33,7 +35,8 @@ const routes = [
     SigninComponent,
     SignupComponent,
     NavbarComponent,
-    ProfileComponent
+    ProfileComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

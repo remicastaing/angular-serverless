@@ -16,7 +16,7 @@ import { AuthService } from '../components/Auth/auth.service';
 })
 export class SigninComponent implements OnInit {
   public submitted : Boolean = false;
-  errors = {login: undefined};;
+  errors = {login: undefined};
 
   signinForm: FormGroup;
   email: AbstractControl;
@@ -39,13 +39,15 @@ export class SigninComponent implements OnInit {
 
   onSubmit(form) {
     this.submitted = true;
-    console.log([form.value.email, form.value.password]);
+
     if (form.valid){
       this.authService.login(form.value.email, form.value.password).subscribe(
         (result) => {
+          console.log(result);
           if (result) {
-            console.log(result);
-            this.router.navigate(['']);
+            
+            this.router.navigate(['home']);
+            
           }
         },
         (result) => {

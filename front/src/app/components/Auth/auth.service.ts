@@ -15,6 +15,8 @@ export class AuthService {
 
   public currentUser : BehaviorSubject<User>= new BehaviorSubject(null);
 
+  private httpOptions : RequestOptions = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+
   constructor(private api: APIService, private http: Http, private userService: UserService) {
     
     console.log('construct');
@@ -45,6 +47,7 @@ export class AuthService {
         localStorage.setItem('auth_token', res.token);
         this.getCurrentUser();
         this.isLoggedIn.next(true);
+        return true;
       });
   }
 
@@ -78,8 +81,17 @@ export class AuthService {
       });
   }
 
-  changePassword(){
-
+  changePassword(oldPassword, newPassword){
+    return this.currentUser
+    .flatMap(
+      v =>  {
+          console.log(v.id);
+          return this.http
+            .post(`/api/users/${v.id}/password`, 
+              JSON.stringify({ oldPassword, newPassword }),
+              this.httpOptions)
+            .map(res => res.json());
+        });
   }
 
   hasRole(){

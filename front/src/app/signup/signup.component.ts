@@ -43,7 +43,9 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit(value) {
-    this.authService.createUser(value.name,value.email,value.password ).subscribe((result) => {
+    this.authService
+    .createUser(value.name,value.email,value.password )
+    .subscribe((result) => {
       if (result) {
         console.log(result);
         //this.router.navigate(['']);

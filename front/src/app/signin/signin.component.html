@@ -6,7 +6,7 @@
       <p>Admin account is <code>admin@example.com</code> / <code>admin</code></p>
     </div>
     <div class="col-sm-12">
-      <form class="form" [formGroup]="signinForm" (submit)="onSubmit(signinForm)" novalidate>
+      <form class="form" [formGroup]="signinForm" (submit)="onSubmit(signinForm)" [ngClass]="{'has-danger':errors.login}" novalidate>
 
         <div class="form-group row" [ngClass]="{'has-success': email.valid, 'has-danger': !email.valid && email.touched }">
 
