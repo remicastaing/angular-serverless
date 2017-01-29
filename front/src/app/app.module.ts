@@ -14,18 +14,22 @@ import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
-//import {requestOptionsProvider} from './default-request-options.service'
-import {APIServiceProvider} from './components/Auth/api.service';
-import {UserService} from './components/Auth/user.service';
-import {AuthService} from './components/Auth/auth.service';
 import { SettingsComponent } from './settings/settings.component'
+import {AuthGuard} from './components/Auth/auth.guard';
+
+// import {APIServiceProvider} from './components/Auth/api.service';
+// import {UserService} from './components/Auth/user.service';
+// import {AuthService} from './components/Auth/auth.service';
+
+import {AuthModule} from './components/Auth/auth.module';
+
 
 const routes = [
   {path: '', component: HomeComponent}, // load the home route by default
   {path: 'home', component: HomeComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SigninComponent},
-  {path: 'settings', component: SettingsComponent}
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],}
 ];
 
 @NgModule({
@@ -45,8 +49,9 @@ const routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
     NgbModule.forRoot(),
+    AuthModule
   ],
-  providers: [APIServiceProvider, UserService, AuthService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

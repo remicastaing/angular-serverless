@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import {UserService} from './user.service';
-import {User} from './user.model';
-import {APIService} from './api.service';
-
-import { Observable }     from 'rxjs/Observable';
+import { Router } from '@angular/router';
+import { User } from './user.model';
+import { APIService } from './api.service';
 import { BehaviorSubject }     from 'rxjs';
 import 'rxjs/add/operator/map';
 
@@ -15,9 +12,7 @@ export class AuthService {
 
   public currentUser : BehaviorSubject<User>= new BehaviorSubject(null);
 
-  private httpOptions : RequestOptions = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
-
-  constructor(private api: APIService, private http: Http, private userService: UserService) {
+  constructor(private api: APIService, private router : Router) {
     
     console.log('construct');
 
@@ -33,14 +28,10 @@ export class AuthService {
 
   login(email, password) {
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http
+    return this.api
       .post(
         '/api/auth/local', 
-        JSON.stringify({ email, password }),
-        options
+        JSON.stringify({ email, password })
       )
       .map(res => res.json())
       .map((res) => {
@@ -52,8 +43,17 @@ export class AuthService {
   }
 
   getCurrentUser(){
-    this.userService.getMe().subscribe((res) => {
+    return this.api
+    .get('/api/users/me')
+    .map((_res) => {
+      let res = _res.json();
+      return new User(res._id, res.name, res.email, res.role);
+     })
+    .subscribe((res) => {
       this.currentUser.next(res);
+      },
+      (res) => {
+        this.logout();
       });
   }
 
@@ -62,6 +62,7 @@ export class AuthService {
     localStorage.removeItem('auth_token');
     this.isLoggedIn.next(false);
     this.currentUser.next(null);
+    this.router.navigate(['home']);
   }
 
   createUser(name, email, password){
@@ -85,21 +86,23 @@ export class AuthService {
     return this.currentUser
     .flatMap(
       v =>  {
-          console.log(v.id);
-          return this.http
-            .post(`/api/users/${v.id}/password`, 
-              JSON.stringify({ oldPassword, newPassword }),
-              this.httpOptions)
+          return this.api
+            .put(`/api/users/${v.id}/password`, 
+              JSON.stringify({ oldPassword, newPassword }))
             .map(res => res.json());
         });
   }
 
-  hasRole(){
-
+  hasRole(role: string){
+    return this.currentUser
+      .map(
+        u =>  u.role === role);
   }
 
   isAdmin(){
-
+    return this.currentUser
+      .map(
+        u =>  u.role === 'admin');
   }
 
   getToken(){
