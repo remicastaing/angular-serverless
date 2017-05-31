@@ -1,0 +1,4 @@
+[
+	{"name":"test","email":"test@test.com","role":"user","salt":{"type":"Buffer","data":[118,71,177,248,110,54,84,149,174,240,32,125,83,151,113,196]},"encryptedPassword":"LCmT7j986FbGDHdX9qihiu04baGLrAyOQ6ATvyFmDxEqiuqx7QT95z2Y0OfeQr0bfozI4XbCwDeLuEl/RHTF/Q==","id":"6c56f4e0-1e29-11e7-b5a1-d9397b6b601c","createdAt":1491854891822,"updatedAt":1491854891822},
+	{"name":"admin","email":"admin@example.com","role":"admin","salt":{"type":"Buffer","data":[230,208,69,28,91,246,41,48,95,35,180,185,55,34,65,129]},"encryptedPassword":"Z2rHlFpoYWyLmIE4QNqbctbPVi6z/5W7UsTlNUIJDCyCv2fcbngMilPJnCwjUIejXqslt3vDuoRWjQMsTb/hHw==","id":"4fc78e70-1f37-11e7-8523-05046cdd1184","createdAt":1491970808022,"updatedAt":1491970808022}
+]

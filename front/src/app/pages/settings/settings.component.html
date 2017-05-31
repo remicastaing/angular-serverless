@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Change Password</h1>
+      <br>
+    </div>
+    <div class="col-sm-12">
+      <form class="form" [formGroup]="changePasswordForm" (submit)="onSubmit(changePasswordForm.value)"  [ngClass]="{'has-danger':errors.form}" novalidate>
+
+        <div class="alert alert-success" role="alert" *ngIf="message">
+          {{message}}
+        </div>
+
+        <div class="form-group row" [ngClass]="{'has-success': currentpassword.valid, 'has-danger': (!currentpassword.valid && currentpassword.touched) || (changePasswordForm.hasError('nomatch') && confirm.touched) || errors.oldpassword}">
+
+          <label for="currentpassword" class="col-sm-3 col-form-label">Current Password</label>
+          <div class="col-sm-9">
+            <input type="text" name="currentpassword" id="currentpassword" class="form-control" [formControl]="currentpassword"/>
+            <div class="form-control-feedback" *ngIf="currentpassword.hasError('required') && currentpassword.touched" >
+               Please enter the current password.
+            </div>
+            <div class="form-control-feedback" *ngIf="errors.oldpassword" >
+               {{ errors.oldpassword }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row" [ngClass]="{'has-success': password.valid, 'has-danger': (!password.valid && password.touched) || (changePasswordForm.hasError('nomatch') && confirm.touched) }">
+
+          <label for="password" class="col-sm-3 col-form-label">New Password</label>
+          <div class="col-sm-9">
+            <input type="password" name="password" id="password" class="form-control" [formControl]="password"/>
+            <div class="form-control-feedback" *ngIf="password.hasError('required') && password.touched" >
+               Please enter a new password.
+            </div>
+            <div class="form-control-feedback" *ngIf="password.hasError('minlength') && password.touched" >
+               Password should have a least 3 characters.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row" [ngClass]="{'has-success': confirm.valid, 'has-danger': (!confirm.valid && confirm.touched) || (changePasswordForm.hasError('nomatch') && confirm.touched) }">
+
+          <label for="confirm" class="col-sm-3 col-form-label">Confirm New Password</label>
+          <div class="col-sm-9">
+            <input type="password" name="confirm" id="confirm" class="form-control" [formControl]="confirm"/>
+            <div class="form-control-feedback" *ngIf="confirm.hasError('required') && confirm.touched" >
+               Please confirm new password.
+            </div>
+            <div class="form-control-feedback" *ngIf="confirm.hasError('minlength') && confirm.touched" >
+               Password should have a least 3 characters.
+            </div>
+            <div class="form-control-feedback" *ngIf="changePasswordForm.hasError('nomatch') && confirm.touched" >
+               New password should match.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group has-danger">
+          <p class="form-control-feedback">{{ errors.form }}</p>
+        </div>
+
+
+
+
+        <div class = "float-sm-right">
+          <button class="btn btn-outline-primary" type="submit" [disabled]="!changePasswordForm.valid">
+            Save changes
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>

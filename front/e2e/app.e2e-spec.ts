@@ -1,6 +1,6 @@
 import { AngularServerlessPage } from './app.po';
 
-describe('angular-serverless App', function() {
+describe('angular-serverless App', () => {
   let page: AngularServerlessPage;
 
   beforeEach(() => {

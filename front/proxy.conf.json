@@ -1,6 +1,14 @@
 {
-  "/api": {
-    "target": "http://localhost:3000",
-    "secure": false
+  "/amz/**": {
+    "target": "https://ybt7ve7w8d.execute-api.eu-west-1.amazonaws.com/",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel" : "debug"
+  },
+  "/api/**": {
+    "target": "http://localhost:3000/",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel" : "debug"
   }
 }

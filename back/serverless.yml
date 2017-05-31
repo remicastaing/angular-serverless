@@ -1,0 +1,169 @@
+service: ng-sls-users
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+package:
+  individually: false
+  exclude:
+    - node_modules/serverless-dynamodb-local
+    - node_modules/dynamodb-localhost
+    - node_modules/bluebird
+    - node_modules/serverless-dynamodb-local
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-plugin-include-dependencies
+
+custom:
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+    seed:
+      test:
+        sources:
+          - table: ng-sls-users-dev
+            sources: [./seeds/fake-test-users.json]
+  serverless-offline:
+    prefix: api
+
+provider:
+  name: aws
+  stage: api
+  runtime: nodejs6.10
+  region: eu-west-1
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    SESSION_SECRET: "old-secret"
+    FACEBOOK_ID: "149229655618857"
+    FACEBOOK_SECRET: "698c3a548c4bf52b62912441554c2aeb"
+    REDIRECT_URL: "http://localhost:4200/api/auth/facebook"
+    DOMAIN: "http://localhost:4200/"
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/*"
+
+functions:
+  # list:
+  #   handler: users/list.list
+  #   events:
+  #     - http:
+  #         path: users
+  #         method: get
+  #         cors: true
+
+  auth:
+    handler: auth/auth.auth
+
+  f1deleteUser:
+    handler: users/delete.delete
+    events:
+      - http:
+          path: users/{id}
+          method: delete
+          cors: true
+
+  f2me:
+    handler: users/get.me
+    description: Get current user
+    events:
+      - http:
+          path: users/me
+          method: get
+          cors: true
+          authorizer: auth
+
+  f3updatePassword:
+    handler: users/update.password
+    events:
+      - http:
+          path: users/{id}/password
+          method: put
+          cors: true
+
+  f4createUser:
+    handler: users/create.create
+    events:
+      - http:
+          path: users
+          method: post
+          cors: true
+
+  f5getUser:
+    handler: users/get.get
+    events:
+      - http:
+          path: users/{id}
+          method: get
+          cors: true
+
+  f6authlocal:
+    handler: auth/local.local
+    events:
+      - http:
+          path: auth/local
+          method: post
+          cors: true
+
+  f6authfacebook:
+    handler: auth/facebook.auth
+    events:
+      - http:
+          path: auth/facebook
+          method: get
+          cors: true      
+
+  f7getThings:
+    handler: things/handler.get
+    events:
+      - http:
+          path: things
+          method: get
+          cors: true       
+
+resources:
+  Resources:
+    UsersDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+          -
+            AttributeName: email
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - 
+            IndexName: "email"
+            KeySchema: 
+              - 
+                AttributeName: "email"
+                KeyType: "HASH"
+            Projection: 
+              ProjectionType: "ALL"
+            ProvisionedThroughput: 
+              ReadCapacityUnits: "1"
+              WriteCapacityUnits: "1"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}

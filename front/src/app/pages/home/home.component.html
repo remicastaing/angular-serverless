@@ -1,0 +1,31 @@
+
+
+    <div class="container">
+
+       <br>
+      <div class="jumbotron">
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-3">
+            <img src="assets/ng-sls.svg" alt="Angular-Serverless">
+          </div>
+        </div>
+        <br>
+        <h1>Angular-Serverless</h1>
+        <p class="lead">This example is a quick exercise to illustrate how to build a signup/signin mechanism with angular and serverless</p>
+        <hr class="my-4">
+        <p>Run all your code locally with angular CLI for the front-end and serverless-offline/serverless-dynamodb-local plugins for the back-end.</p>
+  
+      </div>
+
+<h1 class="page-header">Features:</h1>
+<br>
+
+ <div class="card-deck">
+    <div class="card" *ngFor="let thing  of (awesomeThings | async)" >
+      <img class="card-img-top" src="{{thing.img}}" alt="Card image cap">
+      <div class="card-block">
+        <h3 class="card-title">{{thing.name}}</h3>
+        <p class="card-text">{{thing.info}}</p>
+      </div>
+    </div>
+ </div>
