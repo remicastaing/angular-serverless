@@ -37,9 +37,9 @@ provider:
   region: eu-west-1
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
-    SESSION_SECRET: "old-secret"
-    FACEBOOK_ID: "149229655618857"
-    FACEBOOK_SECRET: "698c3a548c4bf52b62912441554c2aeb"
+    SESSION_SECRET: ${file(./secrets.yml):SESSION_SECRET}
+    FACEBOOK_ID: ${file(./secrets.yml):FACEBOOK_ID}
+    FACEBOOK_SECRET: ${file(./secrets.yml):FACEBOOK_SECRET}
     REDIRECT_URL: "http://localhost:4200/api/auth/facebook"
     DOMAIN: "http://localhost:4200/"
 

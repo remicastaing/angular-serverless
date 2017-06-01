@@ -17,13 +17,13 @@ import { AuthService } from '../../modules/Auth';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-	changePasswordForm: FormGroup;
+  changePasswordForm: FormGroup;
   currentpassword: AbstractControl;
   password: AbstractControl;
   confirm: AbstractControl;
   errors = {
     oldpassword: undefined,
-    form : undefined
+    form: undefined
   };
   message = null;
 
@@ -31,7 +31,7 @@ export class SettingsComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, fb: FormBuilder) {
 
     this.changePasswordForm = fb.group({
-    	'currentpassword': ['', Validators.compose([Validators.required, Validators.minLength(3)])],
+      'currentpassword': ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       'confirm': ['', Validators.compose([Validators.required, Validators.minLength(3)])]
     }, { validator: passwordMatcher });
@@ -46,13 +46,13 @@ export class SettingsComponent implements OnInit {
   onSubmit(form) {
 
     this.authService
-    .changePassword(form.currentpassword,form.password )
-    .subscribe(
-    	(result) => {
-    		console.log('toto');
+      .changePassword(form.currentpassword, form.password)
+      .subscribe(
+      (result) => {
+        console.log('toto');
         this.errors.oldpassword = undefined;
         this.errors.form = undefined;
-        this.message = "Your password has been succesfully updated."
+        this.message = 'Your password has been succesfully updated.';
         this.changePasswordForm.reset();
 
       },
@@ -61,21 +61,21 @@ export class SettingsComponent implements OnInit {
 
         switch (result.status) {
           case 200:
-          break;
-          case 403: 
-          console.log( result);       
-          this.errors.oldpassword = result.json().message;
-          break;
-          default:  
-          console.log(result);
-          this.errors.form = result.message;
-          break;
+            break;
+          case 403:
+            console.log(result);
+            this.errors.oldpassword = result.json().message;
+            break;
+          default:
+            console.log(result);
+            this.errors.form = result.message;
+            break;
         }
       });
   }
 }
 
-const passwordMatcher = (control: AbstractControl): {[key: string]: boolean} => {
+const passwordMatcher = (control: AbstractControl): { [key: string]: boolean } => {
   const password = control.get('password');
   const confirm = control.get('confirm');
   if (!password || !confirm) return null;

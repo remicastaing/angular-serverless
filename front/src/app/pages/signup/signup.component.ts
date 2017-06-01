@@ -13,7 +13,7 @@ import { passwordMatcher } from './password-matcher';
 import { OauthButtonsComponent} from '../../modules/Auth';
 
 @Component({
-  selector: 'signup',
+  selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })

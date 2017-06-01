@@ -10,19 +10,19 @@ import {
 import { AuthService } from '../../modules/Auth';
 
 @Component({
-  selector: 'signin',
+  selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-  public submitted : Boolean = false;
-  errors = {login: undefined};
+  public submitted: Boolean = false;
+  errors = { login: undefined };
 
   signinForm: FormGroup;
   email: AbstractControl;
   password: AbstractControl;
 
-  
+
 
   constructor(private authService: AuthService, private router: Router, fb: FormBuilder) {
     this.signinForm = fb.group({
@@ -40,7 +40,7 @@ export class SigninComponent implements OnInit {
   onSubmit(form) {
     this.submitted = true;
 
-    if (form.valid){
+    if (form.valid) {
       this.authService.login(form.value.email, form.value.password).subscribe(
         (result) => {
           console.log(result);
@@ -50,7 +50,7 @@ export class SigninComponent implements OnInit {
         },
         (result) => {
           this.errors.login = result.json().message;
-        });      
+        });
     }
 
   }
