@@ -25,7 +25,7 @@ custom:
     seed:
       test:
         sources:
-          - table: ng-sls-users-dev
+          - table: ng-sls-users-api
             sources: [./seeds/fake-test-users.json]
   serverless-offline:
     prefix: api
@@ -68,6 +68,15 @@ functions:
   auth:
     handler: auth/auth.auth
 
+  graphql:
+    handler: graphql/handler.get
+    description: GraphQL entry point
+    events:
+      - http:
+          path: grphql
+          method: get
+          cors: true
+
   f1deleteUser:
     handler: users/delete.delete
     events:
@@ -93,6 +102,7 @@ functions:
           path: users/{id}/password
           method: put
           cors: true
+          authorizer: auth
 
   f4createUser:
     handler: users/create.create
