@@ -49,7 +49,7 @@ export class SettingsComponent implements OnInit {
       .changePassword(form.currentpassword, form.password)
       .subscribe(
       (result) => {
-        console.log('toto');
+        console.log(result);
         this.errors.oldpassword = undefined;
         this.errors.form = undefined;
         this.message = 'Your password has been succesfully updated.';
