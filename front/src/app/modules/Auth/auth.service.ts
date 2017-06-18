@@ -4,6 +4,7 @@ import { User } from './user.model';
 import { APIService } from './api.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 
 @Injectable()
 export class AuthService {
@@ -86,9 +87,9 @@ export class AuthService {
   changePassword(oldPassword, newPassword) {
     return this.currentUser
       .flatMap(
-      v => {
+      user => {
         return this.api
-          .put(`/api/users/${v.id}/password`,
+          .put(`/api/users/${user.id}/password`,
           JSON.stringify({ oldPassword, newPassword }))
           .map(res => res.json());
       });

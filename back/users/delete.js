@@ -1,8 +1,8 @@
 'use strict';
 
-const dynamodb = require('../common/dynamodb');
+import dynamodb from '../common/dynamodb';
 
-module.exports.delete = (event, context, callback) => {
+export const del = (event, context, callback) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {

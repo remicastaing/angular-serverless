@@ -1,12 +1,9 @@
-'use strict';
-
-
 var defaultByteSize = 16;
 var defaultIterations = 10000;
 var defaultKeyLength = 64;
 
 
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 
 // Policy helper function
@@ -29,7 +26,7 @@ const generatePolicy = (principalId, effect, resource) => {
 
 
 // Reusable Authorizer function, set on `authorizer` field in serverless.yml
-module.exports.auth = (event, context, cb) => {
+export const auth = (event, context, cb) => {
 
   if (event.authorizationToken) {
     // remove "bearer " from token

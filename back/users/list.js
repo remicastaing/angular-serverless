@@ -1,8 +1,8 @@
 'use strict';
 
-const dynamodb = require('../common/dynamodb');
+import dynamodb from '../common/dynamodb';
 
-module.exports.list = (event, context, callback) => {
+export const list = (event, context, callback) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
   };
