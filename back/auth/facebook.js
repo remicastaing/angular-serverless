@@ -1,9 +1,9 @@
 'use strict';
 
-var OAuth2 = require('oauth').OAuth2;
-var https = require('https');
+import OAuth from 'oauth'; ;
+import https from 'https';
 
-var oauth2 = new OAuth2(
+var oauth2 = new OAuth.OAuth2(
 	process.env.FACEBOOK_ID,
 	process.env.FACEBOOK_SECRET,
 	"https://graph.facebook.com/",
@@ -14,7 +14,7 @@ var options = {
 	"redirect_uri": process.env.REDIRECT_URL
 };
 
-module.exports.auth = (event, context, callback) => {
+export const auth = (event, context, callback) => {
 	/*
 	 * return error if query string has an error parameter. e.g. if user
 	 * declines to grant access.

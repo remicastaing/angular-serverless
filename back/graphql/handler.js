@@ -1,13 +1,28 @@
-'use strict';
+const server = require("graphql-server-lambda");
+const graphqlTools = require("graphql-tools");
+import dynamodb from '../common/dynamodb';
 
-const dynamodb = require('../common/dynamodb');
-const graphql = require('graphql');
+const schema = `
+type Query {
+    hello: String
+}
+`;
 
-import { graphql } from 'graphql';
-import Schema from './schema';
+const resolver = {
+    Query: {
+        hello: () => {
+            return 'Hello World';
+        }
+    }
+};
 
-module.exports.get = (event, context, callback) => {
 
+const myGraphQLSchema = graphqlTools.makeExecutableSchema({
+    typeDefs: schema,
+    resolvers: resolver
+});
 
-
+exports.graphqlHandler = server.graphqlLambda({ schema: myGraphQLSchema });
+exports.graphiqlHandler = server.graphiqlLambda({ 
+    schema: myGraphQLSchema
 });

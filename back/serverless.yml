@@ -13,7 +13,8 @@ package:
 plugins:
   - serverless-dynamodb-local
   - serverless-offline
-  - serverless-plugin-include-dependencies
+  - serverless-plugin-webpack
+
 
 custom:
   dynamodb:
@@ -29,6 +30,8 @@ custom:
             sources: [./seeds/fake-test-users.json]
   serverless-offline:
     prefix: api
+    babelOptions:
+      presets: ["es2015"]
 
 provider:
   name: aws
@@ -69,16 +72,29 @@ functions:
     handler: auth/auth.auth
 
   graphql:
-    handler: graphql/handler.get
+    handler: graphql/handler.graphqlHandler
     description: GraphQL entry point
     events:
       - http:
           path: grphql
           method: get
           cors: true
+      - http:
+          path: grphql
+          method: post
+          cors: true
+          
+  graphiql:
+    handler: graphql/handler.graphiqlHandler
+    description: GraphiQL entry point
+    events:
+      - http:
+          path: grphiql
+          method: get
+          cors: true
 
   f1deleteUser:
-    handler: users/delete.delete
+    handler: users/delete.del
     events:
       - http:
           path: users/{id}

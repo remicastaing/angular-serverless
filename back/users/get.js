@@ -1,65 +1,30 @@
 'use strict';
 
-const dynamodb = require('../common/dynamodb');
+import dynamodb from '../common/dynamodb';
+import { User } from './user.model';
+import { ErrorResponse, ValidResponse } from '../common/response';
 
-module.exports.get = (event, context, callback) => {
-  const params = {
-    TableName: process.env.DYNAMODB_TABLE,
-    //IndexName: 'id', // optional (if querying an index)
-    KeyConditionExpression: 'id = :value', // a string representing a constraint on the attribute
-    ExpressionAttributeValues: { // a map of substitutions for all attribute values
-      ':value': event.pathParameters.id
-    }
-  };
+export const get = (event, context, callback) => {
 
-  // fetch todo from the database
-  dynamodb.query(params, (error, result) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(new Error('Couldn\'t fetch the todo item.'));
-      return;
-    }
+  const id = event.pathParameters.id;
 
-    // create a response
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(result),
-    };
-    callback(null, response);
-  });
+  User.findUserById(id).then((user) => {
+    console.log(user);
+    callback(null, ValidResponse(user.forFrontEnd()))
+  })
+    .catch((error) => {
+      callback(null, ErrorResponse(error))
+    });
 };
 
-module.exports.me = (event, context, callback) => {
-  
-  const params = {
-      TableName: process.env.DYNAMODB_TABLE,
-      Key: { // a map of attribute name to AttributeValue for all primary key attributes
-          id: event.requestContext.authorizer.principalId
-      },
-      AttributesToGet: [ // optional (list of specific attribute names to return)
-          'id',
-          'name',
-          'email',
-          'role'
-      ],
-  };
+export const me = (event, context, callback) => {
 
-  // fetch todo from the database
-  dynamodb.get(params, (error, result) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(new Error('Couldn\'t fetch the todo item.'));
-      return;
-    }
-
-    // create a response
-    console.log(result);
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(result.Item),
-    };
-    callback(null, response);
-  });
+  const id = event.requestContext.authorizer.principalId;
+  User.findUserById(id).then((user) => {
+    console.log(user);
+    callback(null, ValidResponse(user.forFrontEnd()))
+  })
+    .catch((error) => {
+      callback(null, ErrorResponse(error))
+    });
 };
