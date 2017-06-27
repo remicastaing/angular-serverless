@@ -9,7 +9,6 @@ export const get = (event, context, callback) => {
   const id = event.pathParameters.id;
 
   User.findUserById(id).then((user) => {
-    console.log(user);
     callback(null, ValidResponse(user.forFrontEnd()))
   })
     .catch((error) => {
@@ -21,7 +20,6 @@ export const me = (event, context, callback) => {
 
   const id = event.requestContext.authorizer.principalId;
   User.findUserById(id).then((user) => {
-    console.log(user);
     callback(null, ValidResponse(user.forFrontEnd()))
   })
     .catch((error) => {

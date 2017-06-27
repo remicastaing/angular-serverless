@@ -7,9 +7,10 @@ import jwt from 'jsonwebtoken';
 
 
 // Policy helper function
-const generatePolicy = (principalId, effect, resource) => {
+const generatePolicy = (principalId, effect, resource, role) => {
   const authResponse = {};
   authResponse.principalId = principalId;
+  authResponse.context = {'role' : role};
   if (effect && resource) {
     const policyDocument = {};
     policyDocument.Version = '2012-10-17';
@@ -33,11 +34,11 @@ export const auth = (event, context, cb) => {
     const token = event.authorizationToken.substring(7);
 
     jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
+      console.log(decoded);
       if (err) {
         cb('Unauthorized');
       } else {
-      	console.log(decoded);
-        cb(null, generatePolicy(decoded.id, 'Allow', event.methodArn));
+        cb(null, generatePolicy(decoded.id, 'Allow', event.methodArn, decoded.role));
       }
     });
   } else {

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from './user.model';
 import { APIService } from './api.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { UserService} from './user.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
@@ -13,7 +14,7 @@ export class AuthService {
 
   public currentUser: BehaviorSubject<User> = new BehaviorSubject(null);
 
-  constructor(private api: APIService, private router: Router) {
+  constructor(private api: APIService, private router: Router, private userService: UserService) {
 
     console.log('construct');
 
@@ -44,12 +45,8 @@ export class AuthService {
   }
 
   getCurrentUser() {
-    return this.api
-      .get('/api/users/me')
-      .map((_res) => {
-        const res = _res.json();
-        return new User(res.id, res.name, res.email, res.role);
-      })
+    return this.userService
+      .getMe()
       .subscribe((res) => {
         this.currentUser.next(res);
       },

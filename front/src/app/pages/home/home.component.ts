@@ -1,7 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+
+const awesomeThingsQuery = gql`
+  {
+    things
+    {
+      name
+      info
+      img
+    }
+  }`;
+
+interface QueryResponse {
+  things;
+};
 
 @Component({
   selector: 'app-home',
@@ -10,14 +25,17 @@ import 'rxjs/add/operator/map';
 })
 export class HomeComponent implements OnInit {
 
-  public awesomeThings: Observable<any> = new Observable();
+  public awesomeThings: Observable<any>;
 
-
-  constructor(private http: Http) { }
+  constructor(private apollo: Apollo) { }
 
   ngOnInit() {
-    this.awesomeThings = this.http.get('/api/things')
-      .map(res => res.json());
+    this.awesomeThings = this.apollo.watchQuery<QueryResponse>({ query: awesomeThingsQuery })
+      .map((data) => {
+        return data.data.things;
+      });
   }
-
+  
 }
+
+

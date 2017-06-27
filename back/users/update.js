@@ -12,16 +12,12 @@ export const password = (event, context, callback) => {
 
   User.findUserById(id)
     .then((user) => {
-      console.log(user);
       return user.checkPassword(oldPassword)
     })
     .then((user) => {
-      console.log(user);
-      console.log(newPassword);
       return user.updatePassword(newPassword)
     })
     .then(function (user) {
-      console.log(user);
       callback(null, ValidResponse({ message: 'Your password has been succesfully updated.' }));
     })
     .catch(function (error) {

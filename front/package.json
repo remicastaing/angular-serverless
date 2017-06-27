@@ -21,9 +21,12 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.22",
+    "apollo-angular": "^0.13.0",
+    "apollo-client": "^1.4.2",
     "bootstrap": "4.0.0-alpha.6",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
+    "graphql-tag": "^2.4.0",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
   },

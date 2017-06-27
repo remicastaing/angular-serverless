@@ -76,20 +76,35 @@ functions:
     description: GraphQL entry point
     events:
       - http:
-          path: grphql
+          path: graphql
           method: get
           cors: true
       - http:
-          path: grphql
+          path: graphql
           method: post
           cors: true
+
+  authgraphql:
+    handler: authgraphql/handler.authGraphqlHandler
+    description: Authorized GraphQL entry point
+    events:
+      - http:
+          path: graphql/auth
+          method: get
+          cors: true
+          authorizer: auth
+      - http:
+          path: graphql/auth
+          method: post
+          cors: true
+          authorizer: auth
           
   graphiql:
     handler: graphql/handler.graphiqlHandler
     description: GraphiQL entry point
     events:
       - http:
-          path: grphiql
+          path: graphiql
           method: get
           cors: true
 

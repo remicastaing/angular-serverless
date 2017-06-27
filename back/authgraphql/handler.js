@@ -7,17 +7,18 @@ import { schema } from './schema.js'
 
 
 const myGraphQLSchema = makeExecutableSchema({
-    typeDefs: [...schema],
+    typeDefs: [schema],
     resolvers: resolvers
 });
 
 
-export const graphqlHandler = function (event, context, callback) {
+export const authGraphqlHandler = function (event, context, callback) {
     const callbackFilter = function (error, output) {
         output.headers['Access-Control-Allow-Origin'] = '*';
         callback(error, output);
     };
-
+    const id = event.requestContext.authorizer.principalId;
+    context.user = { id: id };
     const handler = graphqlLambda((event, context) => {
         const headers = event.headers,
             functionName = context.functionName;

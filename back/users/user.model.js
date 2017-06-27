@@ -75,7 +75,6 @@ export var User = class {
         };
 
         return dynamodb.put(param).promise().then((result) => {
-            console.log('user created');
             return Promise.resolve(this);
         });
     }

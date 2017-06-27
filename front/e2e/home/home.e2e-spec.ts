@@ -1,6 +1,6 @@
 import { HomePage } from './home.po';
 
-fdescribe('E2E Test of Home Page', () => {
+describe('E2E Test of Home Page', () => {
   let page: HomePage;
 
   beforeEach(() => {

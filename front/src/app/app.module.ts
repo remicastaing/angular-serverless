@@ -15,6 +15,10 @@ import { AppRoutingModule, routingComponents } from './app.routing';
 import { AuthModule} from './modules/Auth';
 import { ProfileComponent} from './components/profile/profile.component';
 
+import { ApolloModule } from 'apollo-angular';
+
+import { provideClients } from './apollo.clients';
+
 
 @NgModule({
   declarations: [
@@ -29,9 +33,11 @@ import { ProfileComponent} from './components/profile/profile.component';
     ReactiveFormsModule,
     AppRoutingModule,
     NgbModule.forRoot(),
-    AuthModule.forRoot()
+    AuthModule.forRoot(),
+    ApolloModule.forRoot(provideClients)
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
