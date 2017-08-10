@@ -3,21 +3,14 @@
 import { User } from './user.model';
 import { ErrorResponse, ValidResponse } from '../common/response';
 
-
 export const create = (event, context, callback) => {
 
-  const data = JSON.parse(event.body);
+  const userData = JSON.parse(event.body);
+  const verifyCallback = 'http://' + event.headers.Host +  '/api/users/confirm'
 
-  var user;
-
-  try {
-    user = new User(null, data.name, data.email, data.password);
-  } catch (error) {
-    return callback(null, ErrorResponse({ message: error.message }));
-  }
-
-  user.create()
+  User.createLocalUser(userData)
     .then(function (user) {
+      user.sendEmailVerification(verifyCallback);
       callback(null, ValidResponse({ token: user.token(18000) }));
     })
     .catch(function (error) {
