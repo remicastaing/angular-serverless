@@ -1,30 +1,38 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 import { AuthService } from './auth.service';
-import { APIService } from './api.service';
-import { AuthAPIService } from './authAPI.service';
+import { AuthInterceptor, AuthResponseInterceptor } from './authInterceptor';
 import { UserService } from './user.service';
 import { OauthButtonsComponent } from './oauth-buttons/oauth-buttons.component';
+import { UserReducer, IUserState } from './user.reducer';
 
 import { AuthGuard } from './auth.guard';
+import { CallbackComponent } from './callback/callback.component';
 
 @NgModule({
-	imports: [CommonModule],
-	declarations: [OauthButtonsComponent],
-	exports: [OauthButtonsComponent],
-	providers: [AuthGuard]
+    imports: [CommonModule],
+    declarations: [OauthButtonsComponent],
+    exports: [OauthButtonsComponent],
+    providers: [AuthGuard]
 })
 export class AuthModule {
-	static forRoot(): ModuleWithProviders {
-		return {
-			ngModule: AuthModule,
-			providers: [AuthService, APIService, AuthAPIService, UserService]
-		}
-	}
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: AuthModule,
+            providers: [AuthService, UserService,
+                [
+                    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+                    { provide: HTTP_INTERCEPTORS, useClass: AuthResponseInterceptor, multi: true }
+                ]
+            ]
+        };
+    }
 }
 
 export const authComponents = [OauthButtonsComponent];
 
 
-export { AuthService, APIService, AuthAPIService, UserService, AuthGuard, OauthButtonsComponent }
+export { AuthService, UserService, AuthGuard, OauthButtonsComponent, CallbackComponent, UserReducer, IUserState };

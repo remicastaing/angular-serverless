@@ -1,54 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from './user.model';
-import { APIService } from './api.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { UserService} from './user.service';
+import { UserService } from './user.service';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+import { NgRedux } from '@angular-redux/store';
+import { IAppState, getCurrentUser } from '../Store/app.reducer';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AuthService {
 
-  public isLoggedIn: BehaviorSubject<Boolean> = new BehaviorSubject(false);
-
-  public currentUser: BehaviorSubject<User> = new BehaviorSubject(null);
-
-  constructor(private api: APIService, private router: Router, private userService: UserService) {
-
-    console.log('construct');
+  constructor(private http: HttpClient, private router: Router, private userService: UserService, private store: NgRedux<IAppState>) {
 
     if (!!localStorage.getItem('auth_token')) {
-      this.isLoggedIn.next(true);
       this.getCurrentUser();
-    } else {
-      this.isLoggedIn.next(false);
-      this.currentUser.next(null);
     }
 
   }
 
   login(email, password) {
 
-    return this.api
+    return this.http
       .post(
       '/api/auth/local',
       JSON.stringify({ email, password })
       )
-      .map(res => res.json())
-      .map((res) => {
-        localStorage.setItem('auth_token', res.token);
+      .map(res => {
+        localStorage.setItem('auth_token', res['token']);
         this.getCurrentUser();
-        this.isLoggedIn.next(true);
         return true;
       });
   }
 
-  getCurrentUser() {
+  private getCurrentUser() {
     return this.userService
       .getMe()
       .subscribe((res) => {
-        this.currentUser.next(res);
       },
       (res) => {
         this.logout();
@@ -58,13 +44,12 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('auth_token');
-    this.isLoggedIn.next(false);
-    this.currentUser.next(null);
+    this.userService.logout();
     this.router.navigate(['home']);
   }
 
   createUser(name, email, password) {
-    return this.api
+    return this.http
       .post(
       '/api/users/',
       JSON.stringify({
@@ -72,36 +57,21 @@ export class AuthService {
         email: email,
         password: password
       }))
-      .map(res => res.json())
       .map((res) => {
-        localStorage.setItem('auth_token', res.token);
+        localStorage.setItem('auth_token', res['token']);
         this.getCurrentUser();
-        this.isLoggedIn.next(true);
         return true;
       });
   }
 
   changePassword(oldPassword, newPassword) {
-    return this.currentUser
-      .flatMap(
-      user => {
-        return this.api
-          .put(`/api/users/${user.id}/password`,
-          JSON.stringify({ oldPassword, newPassword }))
-          .map(res => res.json());
-      });
-  }
 
-  hasRole(role: string) {
-    return this.currentUser
-      .map(
-      u => u.role === role);
-  }
+    const user = getCurrentUser(this.store.getState());
 
-  isAdmin() {
-    return this.currentUser
-      .map(
-      u => u.role === 'admin');
+    return this.http
+      .put(`/api/users/${user.id}/password`,
+      JSON.stringify({ oldPassword, newPassword }));
+
   }
 
   getToken() {
@@ -109,11 +79,23 @@ export class AuthService {
   }
 
   getFacebookID() {
-    return this.api
+    return this.http
       .get('/api/auth/facebook')
-      .map((_res) => {
-        const res = _res.json();
-        return res.client_id;
+      .map((res) => {
+        return res['client_id'];
       });
+  }
+
+  createFBUser(token, redirect_uri) {
+    return this.http
+      .get(`/api/auth/facebook?code=${token}&redirect_uri=${redirect_uri}`)
+      .map((res) => {
+        localStorage.setItem('auth_token', res['token']);
+        this.getCurrentUser();
+        return true;
+      });
+
+
+
   }
 }

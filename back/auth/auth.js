@@ -36,6 +36,7 @@ export const auth = (event, context, cb) => {
     jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
       console.log(decoded);
       if (err) {
+        
         cb('Unauthorized');
       } else {
         cb(null, generatePolicy(decoded.id, 'Allow', event.methodArn, decoded.role));

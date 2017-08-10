@@ -45,6 +45,9 @@ provider:
     FACEBOOK_SECRET: ${file(./secrets.yml):FACEBOOK_SECRET}
     REDIRECT_URL: "http://localhost:4200/api/auth/facebook"
     DOMAIN: "http://localhost:4200/"
+    FROM_ADDRESS : 'Rémi <remi.castaing@gmail.com>'
+    VERIFY_MAIL : ${file(./secrets.yml):VERIFY_MAIL}
+
 
   iamRoleStatements:
     - Effect: Allow
@@ -143,6 +146,14 @@ functions:
           method: post
           cors: true
 
+  f4confirmMail:
+    handler: users/confirm.confirm
+    events:
+      - http:
+          path: users/confirm
+          method: get
+          cors: true
+
   f5getUser:
     handler: users/get.get
     events:
@@ -174,6 +185,14 @@ functions:
           path: things
           method: get
           cors: true       
+
+  f8testmail:
+    handler: mailer/testmail.send
+    events:
+      - http:
+          path: testmail2
+          method: get
+          cors: true  
 
 resources:
   Resources:

@@ -22,18 +22,18 @@ describe('E2E Test of Signin Page', () => {
   it('should display one email field', () => {
     page.navigateTo();
     const field = page.getEmailField();
-    expect(field.isDisplayed()).toBeTruthy();
+    expect<any>(field.isDisplayed()).toBeTruthy();
   });
 
   it('should display one password field', () => {
     page.navigateTo();
     const field = page.getPasswordfield();
-    expect(field.isDisplayed()).toBeTruthy();
+    expect<any>(field.isDisplayed()).toBeTruthy();
   });
 
   it('should display one login button', () => {
     page.navigateTo();
-    expect(page.getSigninButton().isDisplayed()).toBeTruthy();
+    expect<any>(page.getSigninButton().isDisplayed()).toBeTruthy();
   });
 
   it('login should fail', () => {
@@ -41,20 +41,15 @@ describe('E2E Test of Signin Page', () => {
     page.getEmailField().sendKeys('test@test.com');
     page.getPasswordfield().sendKeys('false');
     page.getSigninButton().click();
-
-    navbar.waitForVisibleProfile();
-
-    expect(navbar.getProfilNameElement().isDisplayed()).toBe(true);
-    expect(navbar.getProfilNameElement().getText()).toBe('');
-    expect(page.getErrorField().getText()).toBe('Something went wrong, please try again.');
+    expect<any>(page.getErrorField().getText()).toBe('Something went wrong, please try again.');
   });
 
   it('should display user name in navbar', () => {
     page.navigateTo();
     page.signin(user);
     navbar.waitForVisibleProfile();
-    expect(navbar.getProfilNameElement().isDisplayed()).toBe(true);
-    expect(navbar.getProfilNameElement().getText()).toBe('test');
+    expect<any>(navbar.getProfilNameElement().isDisplayed()).toBe(true);
+    expect<any>(navbar.getProfilNameElement().getText()).toBe('test');
     navbar.getLoggoutButton().click();
   });
 
@@ -62,7 +57,7 @@ describe('E2E Test of Signin Page', () => {
     page.navigateTo();
     page.signin(user);
     navbar.waitForVisibleLogoutButton();
-    expect(navbar.getLoggoutButton().isDisplayed()).toBe(true);
+    expect<any>(navbar.getLoggoutButton().isDisplayed()).toBe(true);
     navbar.getLoggoutButton().click();
   });
 

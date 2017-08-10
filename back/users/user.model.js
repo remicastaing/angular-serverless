@@ -12,39 +12,58 @@ import Isemail from 'isemail';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import dynamodb from '../common/dynamodb';
+import { sendmail } from '../mails/mailer';
 
 
 export var User = class {
-    constructor(id = null, name, email, password, role = 'user', salt = null) {
 
-        if (!Isemail.validate(email)) {
+    constructor(userData) {
+        if (!Isemail.validate(userData.email)) {
             throw new Error('Invalid email address: ' + email);
         }
 
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.role = role;
+        this.name = userData.name;
+        this.email = userData.email;
+        this.id = userData.id || null;
+        this.role = userData.role || 'user';
+        this.local = userData.local || false;
+        this.FB = userData.FB || false;
+        this.checked = userData.checked || false;
 
-        if (salt) {
-            this.salt = salt;
-            this.password = password;
-        } else {
-            this.salt = crypto.randomBytes(defaultByteSize);
-            this.password = encryptPassword(password, this.salt);
+        if (userData.password) {
+            if (userData.salt) {
+                this.salt = userData.salt;
+                this.password = userData.password;
+            } else {
+                this.salt = crypto.randomBytes(defaultByteSize);
+                this.password = encryptPassword(userData.password, this.salt);
+            }
         }
 
         this.checkPreviousUser = this.checkPreviousUser.bind(this);
-        this.save = this.save.bind(this);
+        this.sendEmailVerification = this.sendEmailVerification.bind(this);
         this.checkPassword = this.checkPassword.bind(this);
     }
 
-    create() {
-        return this.checkPreviousUser()
-            .then(this.save);
+    static createLocalUser(userData) {
+        userData.local = true;
+        var user = new User(userData);
+        return user.checkPreviousUser('local')
+            .then(User.create);
     }
 
-    checkPreviousUser() {
+    static createFBUser(userData) {
+        userData.FB = true;
+        var user = new User(userData);
+        user.mailChecked();
+        return User.create(user);
+    }
+
+    mailChecked() {
+        this.checked = true;
+    }
+
+    checkPreviousUser(filter = (x) => x) {
         const searchPrevious = {
             TableName: process.env.DYNAMODB_TABLE,
             IndexName: 'email', // optional (if querying an index)
@@ -55,27 +74,52 @@ export var User = class {
             Limit: 1
         };
         return dynamodb.query(searchPrevious).promise().then((data) => {
-            if (data.Count > 0) throw new Error('Email already exists');
+            const previousUser = _.filter(data.Items, 'local');
+            if (previousUser.length > 0) throw new Error('Email already exists');
             return Promise.resolve(this);
         })
     }
 
+    sendEmailVerification(verifyCallback) {
 
-    save() {
+        var payload = {
+            user: {
+                id: this.id,
+                name: this.name,
+                email: this.email
+            }
+        };
+
+        var token = jwt.sign(payload, process.env.VERIFY_MAIL);
+        var callbackUrl = verifyCallback + '?token=' + token;
+
+        const data = {
+            name: this.name,
+            email: this.email,
+            subject: 'Bienvenue à Famli Quest!',
+            callbackUrl: callbackUrl
+
+        }
+        sendmail('confirm', data);
+        return Promise.resolve(this);
+    }
+
+
+    static create(user) {
         const timestamp = new Date().getTime();
 
-        this.id = uuid.v1();
-        this.createdAt = timestamp;
-        this.updatedAt = timestamp;
+        user.id = uuid.v1();
+        user.createdAt = timestamp;
+        user.updatedAt = timestamp;
 
         const param = {
             TableName: process.env.DYNAMODB_TABLE,
-            Item: this,
+            Item: user,
             ReturnValues: 'ALL_OLD'
         };
 
         return dynamodb.put(param).promise().then((result) => {
-            return Promise.resolve(this);
+            return Promise.resolve(user);
         });
     }
 
@@ -89,7 +133,8 @@ export var User = class {
         };
 
         return dynamodb.get(params).promise().then((result) => {
-            return Promise.resolve(new User(result.Item.id, result.Item.name, result.Item.email, result.Item.password, result.Item.role, result.Item.salt));
+            const userdata = result.Item;
+            return Promise.resolve(new User(userdata));
         }, (error) => {
             throw new Error('Couldn\'t fetch the user');
         })
@@ -112,7 +157,8 @@ export var User = class {
         };
         return dynamodb.query(searchUser).promise().then((result) => {
             if (result.Count === 0) throw new Error("User doesn't exist");
-            return Promise.resolve(new User(result.Items[0].id, result.Items[0].name, result.Items[0].email, result.Items[0].password, result.Items[0].role, result.Items[0].salt));
+            const res = _.map(result.Items, userData => new User(userData));
+            return Promise.resolve(res);
         });
     }
 
@@ -126,7 +172,7 @@ export var User = class {
     }
 
     forFrontEnd() {
-        return _.pick(this, ['id', 'name', 'email', 'role'])
+        return _.pick(this, ['id', 'name', 'email', 'role', 'checked', 'local', 'FB'])
     }
 
     token(expiresIn) {
@@ -160,11 +206,14 @@ export var User = class {
         });
     }
 
+
 }
 
 function encryptPassword(password, salt) {
     return crypto.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength).toString('base64')
-} 
+}
+
+
 
 
 

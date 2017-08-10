@@ -17,7 +17,7 @@ export class SettingsPage {
     return element(by.id('confirm'));
   }
 
-  getSaveButton(){
+  getSaveButton() {
     return element(by.buttonText('Save changes'));
   }
 
@@ -25,11 +25,11 @@ export class SettingsPage {
     return element(by.className('alert-success'));
   }
 
-  waitForSuccessMessage(){
+  waitForSuccessMessage() {
     browser.wait(ExpectedConditions.presenceOf(this.getSuccessMessage()), 2000);
   }
 
-  changePasword(password){
+  changePasword(password) {
     this.getCurrentPasswordField().sendKeys(password.current);
     this.getPasswordfield().sendKeys(password.new);
     this.getConfirmPasswordfield().sendKeys(password.new);

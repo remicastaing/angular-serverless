@@ -16,7 +16,7 @@ const awesomeThingsQuery = gql`
 
 interface QueryResponse {
   things;
-};
+}
 
 @Component({
   selector: 'app-home',
@@ -35,7 +35,6 @@ export class HomeComponent implements OnInit {
         return data.data.things;
       });
   }
-  
 }
 
 

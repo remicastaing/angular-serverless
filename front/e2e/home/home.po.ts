@@ -9,7 +9,7 @@ export class HomePage {
     return element.all(by.css('.card'));
   }
 
-  waitForHome(){
+  waitForHome() {
     browser.wait(ExpectedConditions.urlContains('home'), 2000);
   }
 
@@ -17,7 +17,7 @@ export class HomePage {
     return element(by.tagName('profile'));
   }
 
-  waitForVisibleProfile(){
+  waitForVisibleProfile() {
     browser.wait(ExpectedConditions.presenceOf(this.getProfilNameElement()), 2000);
   }
 

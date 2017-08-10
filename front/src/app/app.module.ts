@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -19,6 +20,9 @@ import { ApolloModule } from 'apollo-angular';
 
 import { provideClients } from './apollo.clients';
 
+import { NgReduxModule } from '@angular-redux/store';
+
+import { StoreModule } from './modules/Store/store.module';
 
 @NgModule({
   declarations: [
@@ -30,10 +34,13 @@ import { provideClients } from './apollo.clients';
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     AuthModule.forRoot(),
+    NgReduxModule,
+    StoreModule,
     ApolloModule.forRoot(provideClients)
   ],
   providers: [],

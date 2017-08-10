@@ -27,8 +27,6 @@ export class SigninPage {
     this.getSigninButton().click();
   }
 
-
-
 }
 
 

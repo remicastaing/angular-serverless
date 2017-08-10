@@ -49,7 +49,8 @@ export class SigninComponent implements OnInit {
           }
         },
         (result) => {
-          this.errors.login = result.json().message;
+          console.log(result);
+          this.errors.login = result.error.message;
         });
     }
 

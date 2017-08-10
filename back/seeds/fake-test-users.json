@@ -3,12 +3,29 @@
         "name": "test",
         "email": "test@test.com",
         "role": "user",
+        "local": true,
+        "checked": true,
         "salt": {
             "type": "Buffer",
             "data": [118,71,177,248,110,54,84,149,174,240,32,125,83,151,113,196]
         },
         "password": "LCmT7j986FbGDHdX9qihiu04baGLrAyOQ6ATvyFmDxEqiuqx7QT95z2Y0OfeQr0bfozI4XbCwDeLuEl/RHTF/Q==",
         "id": "6c56f4e0-1e29-11e7-b5a1-d9397b6b601c",
+        "createdAt": 1491854891822,
+        "updatedAt": 1491854891822
+    },
+    {
+        "name": "unchecked",
+        "email": "unchecked@test.com",
+        "role": "user",
+        "local": true,
+        "checked": false,
+        "salt": {
+            "type": "Buffer",
+            "data": [118,71,177,248,110,54,84,149,174,240,32,125,83,151,113,196]
+        },
+        "password": "LCmT7j986FbGDHdX9qihiu04baGLrAyOQ6ATvyFmDxEqiuqx7QT95z2Y0OfeQr0bfozI4XbCwDeLuEl/RHTF/Q==",
+        "id": "6c56f4e0-1e29-11e7-b5a1-d9397b6b601d",
         "createdAt": 1491854891822,
         "updatedAt": 1491854891822
     },

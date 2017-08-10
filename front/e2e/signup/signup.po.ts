@@ -25,6 +25,14 @@ export class SignupPage {
     return element(by.buttonText('Sign up'));
   }
 
+  getErrorField() {
+    return element(by.css('.form-group.has-danger')).$('.form-control-feedback');
+  }
+
+  getFBButton() {
+    return element(by.css('.btn.btn-outline-primary.btn-social.btn-facebook'));
+  }
+
   signup(user) {
     this.getNameField().sendKeys(user.name);
     this.getEmailField().sendKeys(user.email);

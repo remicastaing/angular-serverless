@@ -1,24 +1,20 @@
 'use strict';
 
-
-'use strict';
-
-import  {User} from '../users/user.model';
+import { User } from '../users/user.model';
 import { ErrorResponse, ValidResponse } from '../common/response';
-
+import _ from 'lodash';
 
 export const local = (event, context, callback) => {
 
+
   const data = JSON.parse(event.body);
 
-  var email =  data.email;
-  var password =  data.password;
+  var email = data.email;
+  var password = data.password;
 
 
   User.findUserByEmail(email)
-    .then((user) => {
-      return user.checkPassword(password)
-    })
+    .then((users) => _.filter(users, 'local')[0].checkPassword(password))
     .then(function (user) {
       callback(null, ValidResponse({ token: user.token(18000) }));
     })

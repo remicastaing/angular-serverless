@@ -1,7 +1,9 @@
 'use strict';
 
-import OAuth from 'oauth'; ;
+import OAuth from 'oauth';;
 import https from 'https';
+import { User } from '../users/user.model';
+import { ErrorResponse, ValidResponse } from '../common/response';
 
 var oauth2 = new OAuth.OAuth2(
 	process.env.FACEBOOK_ID,
@@ -10,9 +12,7 @@ var oauth2 = new OAuth.OAuth2(
 	null,
 	"v2.8/oauth/access_token");
 
-var options = {
-	"redirect_uri": process.env.REDIRECT_URL
-};
+
 
 export const auth = (event, context, callback) => {
 	/*
@@ -21,27 +21,29 @@ export const auth = (event, context, callback) => {
 	 * error=access_denied&error_code=200&error_description=Permissions+error&error_reason=user_denied
 	 */
 	if (event.queryStringParameters && event.queryStringParameters.error) {
-		console.log(event.queryStringParameters);
 		callback(null, getFailureResponse(event.queryStringParameters));
 	}
 
 	// redirect to facebook if "code" is not provided in the query string
-	else if (!event.queryStringParameters || !event.queryStringParameters.code) {
+	else if (!event.queryStringParameters || !event.queryStringParameters.code || !event.queryStringParameters.redirect_uri) {
 
 		const response = {
-        statusCode: 200,
-        body: JSON.stringify({ client_id: process.env.FACEBOOK_ID }),
-      };
-    callback(null, response);
+			statusCode: 200,
+			body: JSON.stringify({ client_id: process.env.FACEBOOK_ID }),
+		};
+		callback(null, response);
 
 	}
 
 	// process request from facebook that has "code"
 	else {
+		const options = {
+			"redirect_uri": event.queryStringParameters.redirect_uri
+		};
 		oauth2.getOAuthAccessToken(
 			event.queryStringParameters.code,
 			options,
-			function(error, access_token, refresh_token, results) {
+			function (error, access_token, refresh_token, results) {
 
 				if (error) {
 					console.log(error);
@@ -50,28 +52,34 @@ export const auth = (event, context, callback) => {
 
 				var url = "https://graph.facebook.com/me?fields=id,name,email,picture&access_token=" + access_token;
 
-				https.get(url, function(res) {
+				https.get(url, function (res) {
 					console.log("got response: " + res.statusCode);
 
 					var body = '';
 
-					res.on('data', function(chunk) {
+					res.on('data', function (chunk) {
 						body += chunk;
 					});
 
-					res.on('end', function() {
+					res.on('end', function () {
 						var json = JSON.parse(body);
-						console.log('id', json.id);
-						console.log('name', json.name);
-						console.log('email', json.email);
-						console.log('url', json.picture.data.url);
 
-						// you could save/update user details in a DB here...
+						const userData = {
+							name: json.name,
+							email: json.email,
+							picture: json.picture.data
+						}
 
-						console.log('success', data);
-						callback(null, getSuccessResponse(data, process.env.DOMAIN));
+						User.createFBUser(userData)
+							.then(function (user) {
+								//user.sendEmailVerification(verifyCallback);
+								callback(null, ValidResponse({ token: user.token(18000) }));
+							})
+							.catch(function (error) {
+								callback(null, ErrorResponse({ message: error.message }));
+							})
 					});
-				}).on('error', function(error) {
+				}).on('error', function (error) {
 					console.log(error);
 					callback(null, getFailureResponse(error));
 				});

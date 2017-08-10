@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params} from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -10,7 +10,6 @@ import {
 
 import { AuthService } from '../../modules/Auth';
 import { passwordMatcher } from './password-matcher';
-import { OauthButtonsComponent} from '../../modules/Auth';
 
 @Component({
   selector: 'app-signup',
@@ -23,7 +22,7 @@ export class SignupComponent implements OnInit {
   email: AbstractControl;
   password: AbstractControl;
   confirm: AbstractControl;
-  errors = {signup: undefined};
+  errors = { signup: undefined };
 
 
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, fb: FormBuilder) {
@@ -42,24 +41,21 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params: Params) => {
-        let code = params['code'];
-        console.log(code);
-      });
+
   }
 
   onSubmit(value) {
     this.authService
-    .createUser(value.name,value.email,value.password )
-    .subscribe((result) => {
-      console.log(result);
-      if (result) {
-        this.router.navigate(['home']);
-      }
-    },
-    (err) => {
-      console.log(err);
-      this.errors.signup = err.json().message;
-    });
+      .createUser(value.name, value.email, value.password)
+      .subscribe((result) => {
+        console.log(result);
+        if (result) {
+          this.router.navigate(['home']);
+        }
+      },
+      (err) => {
+        console.log(err);
+        this.errors.signup = err.error.message;
+      });
   }
 }
