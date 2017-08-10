@@ -9,7 +9,14 @@ exports.config = {
     './e2e/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+    chromeOptions: {
+      prefs: {
+        'profile.managed_default_content_settings.notifications': 1
+      },
+      // args: [ "--headless", "--disable-gpu", "--window-size=800x600" ]
+    }
+
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
@@ -17,7 +24,7 @@ exports.config = {
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 30000,
-    print: function() {}
+    print: function () { }
   },
   onPrepare() {
     require('ts-node').register({

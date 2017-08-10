@@ -17,12 +17,12 @@ describe('E2E Test of Signup Page', () => {
   it('should display one login field', () => {
     page.navigateTo();
     const field = page.getNameField();
-    expect(field.isDisplayed()).toBeTruthy();
+    expect<any>(field.isDisplayed()).toBeTruthy();
   });
 
   it('should display one sign up button', () => {
     page.navigateTo();
-    expect(page.getSignupButton().isDisplayed()).toBeTruthy();
+    expect<any>(page.getSignupButton().isDisplayed()).toBeTruthy();
   });
 
   it('should create user', () => {
@@ -36,8 +36,21 @@ describe('E2E Test of Signup Page', () => {
     page.signup(user);
 
     navbar.waitForVisibleProfile();
-    expect(navbar.getProfilNameElement().isDisplayed()).toBe(true);
-    expect(navbar.getProfilNameElement().getText()).toBe(user.name);
+    expect<any>(navbar.getProfilNameElement().isDisplayed()).toBe(true);
+    expect<any>(navbar.getProfilNameElement().getText()).toBe(user.name);
+  });
+
+  it('should not create same user twice', () => {
+    page.navigateTo();
+    const name = 'test';
+    const user = {
+      name : name,
+      email : name + '@test.com',
+      password : name
+    };
+    page.signup(user);
+
+    expect<any>(page.getErrorField().getText()).toBe('Email already exists');
   });
 
 });

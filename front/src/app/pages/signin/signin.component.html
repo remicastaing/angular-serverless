@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-12">
       <h1>Login</h1>
-      <p>Accounts are reset on server restart from <code>server/config/seed.js</code>. Default account is <code>test@example.com</code> / <code>test</code></p>
+      <p>Accounts are reset on server restart from <code>server/config/seed.js</code>. Default account is <code>test@example.com</code>        / <code>test</code></p>
       <p>Admin account is <code>admin@example.com</code> / <code>admin</code></p>
     </div>
     <div class="col-sm-12">
@@ -12,12 +12,12 @@
 
           <label for="email" class="col-sm-2 col-form-label">Email</label>
           <div class="col-sm-10">
-            <input type="text" name="email" id="email" class="form-control" [formControl]="email"/>
-            <div class="form-control-feedback" *ngIf="email.hasError('required') && email.touched" >
-               Please enter an email.
+            <input type="text" name="email" id="email" class="form-control" [formControl]="email" />
+            <div class="form-control-feedback" *ngIf="email.hasError('required') && email.touched">
+              Please enter an email.
             </div>
-            <div class="form-control-feedback" *ngIf="email.hasError('pattern') && !email.hasError('required')  && email.touched" >
-               Email is invalid.
+            <div class="form-control-feedback" *ngIf="email.hasError('pattern') && !email.hasError('required')  && email.touched">
+              Email is invalid.
             </div>
           </div>
         </div>
@@ -26,9 +26,9 @@
 
           <label for="password" class="col-sm-2 col-form-label">Password</label>
           <div class="col-sm-10">
-            <input type="text" name="password" id="password" class="form-control" [formControl]="password"/>
-            <div class="form-control-feedback" *ngIf="password.hasError('required') && password.touched" >
-               Please enter a password.
+            <input type="text" name="password" id="password" class="form-control" [formControl]="password" />
+            <div class="form-control-feedback" *ngIf="password.hasError('required') && password.touched">
+              Please enter a password.
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <p class="form-control-feedback">{{ errors.login }}</p>
         </div>
 
-        <div class = "float-sm-right">
+        <div class="float-sm-right">
           <button class="btn btn-outline-primary" type="submit" [disabled]="!signinForm.valid">
             Login
           </button>
@@ -50,4 +50,9 @@
     </div>
   </div>
   <hr>
+  <div class="row">
+    <div class="col-sm-4 col-md-3">
+      <app-oauth-buttons classes="btn-block"></app-oauth-buttons>
+    </div>
+  </div>
 </div>

@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from './auth.service';
+
+import { Observable } from 'rxjs/Observable';
+import { select } from '@angular-redux/store';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router : Router) {}
+    @select(['currentUser', 'currentUser']) currentUser: Observable<any>;
 
-  canActivate() {
-  	this.authService.isLoggedIn.subscribe(
-  		res => {
-  			if (!res) {
-  				this.router.navigate(['home']);
-  			}
-  	})
-    return this.authService.isLoggedIn;
-  }
+    constructor(private router: Router) { }
+
+    canActivate() {
+        return this.currentUser.map(
+            res => {
+                if (res) {
+                    return true;
+                } else {
+                    this.router.navigate(['home']);
+                }
+            });
+    }
 }

@@ -9,6 +9,6 @@ describe('E2E Test of Home Page', () => {
 
   it('should display more than one feature', () => {
     page.navigateTo();
-    expect(page.getFeatureCards().count()).toBeGreaterThan(0);
+    expect<any>(page.getFeatureCards().count()).toBeGreaterThan(0);
   });
 });

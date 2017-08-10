@@ -1,11 +1,10 @@
-import { ApolloClient, createNetworkInterface,  } from 'apollo-client';
+import { ApolloClient, createNetworkInterface, } from 'apollo-client';
 
 
 const authApolloMiddleware = {
   applyMiddleware(req, next) {
 
     const token = localStorage.getItem('auth_token');
-    console.log('add token: '+token);
 
     if (!req.options.headers) {
       req.options.headers = {};  // Create the headers object if needed.
@@ -13,7 +12,7 @@ const authApolloMiddleware = {
     req.options.headers['authorization'] = `Bearer ${token}`;
     next();
   }
-}
+};
 
 const networkInterface = createNetworkInterface({ uri: '/api/graphql' });
 

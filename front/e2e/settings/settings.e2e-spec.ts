@@ -3,7 +3,8 @@ import { SignupPage } from '../signup/signup.po';
 import { SigninPage } from '../signin/signin.po';
 import { SettingsPage } from './settings.po';
 import { Navbar } from '../components/navbar.po';
-import { browser } from 'protractor';
+import { browser, protractor } from 'protractor';
+
 
 describe('E2E Test of Settings Page', () => {
     let settings: SettingsPage;
@@ -54,50 +55,43 @@ describe('E2E Test of Settings Page', () => {
     it('should display one current password field', () => {
         signin.navigateTo();
         signin.signin(user);
-        navbar.waitForVisibleProfile();
-        settings.navigateTo();
-        navbar.waitForVisibleProfile();
+        navbar.waitForVisibleSettings();
+        navbar.getSettingsButton().click();
         const field = settings.getCurrentPasswordField();
-        expect(field.isDisplayed()).toBeTruthy();
+        expect<any>(field.isDisplayed()).toBeTruthy();
     });
 
     it('should display one sign up button', () => {
         signin.navigateTo();
         signin.signin(user);
+        navbar.waitForVisibleSettings();
+        navbar.getSettingsButton().click();
         navbar.waitForVisibleProfile();
-        settings.navigateTo();
-        navbar.waitForVisibleProfile();
-        expect(settings.getSaveButton().isDisplayed()).toBeTruthy();
+        expect<any>(settings.getSaveButton().isDisplayed()).toBeTruthy();
     });
 
     it('should change password', () => {
         signin.navigateTo();
         signin.signin(user);
-        navbar.waitForVisibleProfile();
-        settings.navigateTo();
+        navbar.waitForVisibleSettings();
+        navbar.getSettingsButton().click();
         settings.changePasword({
             current: name,
             new: 'newpassword'
         });
 
         settings.waitForSuccessMessage();
-        expect(settings.getSuccessMessage().getText()).toBe('Your password has been succesfully updated.');
+        expect<any>(settings.getSuccessMessage().getText()).toBe('Your password has been succesfully updated.');
         navbar.getLoggoutButton().click();
     });
 
     it('login with old pasword should fail', () => {
-
         signin.navigateTo();
         signin.signin({
             email: name + '@test.com',
             password: name
         });
-
-        navbar.waitForVisibleProfile();
-
-        expect(navbar.getProfilNameElement().isDisplayed()).toBe(true);
-        expect(navbar.getProfilNameElement().getText()).toBe('');
-        expect(signin.getErrorField().getText()).toBe('Something went wrong, please try again.');
+        expect<any>(signin.getErrorField().getText()).toBe('Something went wrong, please try again.');
     });
 
     it('login with new pasword should success', () => {
@@ -108,8 +102,8 @@ describe('E2E Test of Settings Page', () => {
             password: 'newpassword'
         });
         navbar.waitForVisibleProfile();
-        expect(navbar.getProfilNameElement().isDisplayed()).toBe(true);
-        expect(navbar.getProfilNameElement().getText()).toBe(name);
+        expect<any>(navbar.getProfilNameElement().isDisplayed()).toBe(true);
+        expect<any>(navbar.getProfilNameElement().getText()).toBe(name);
         navbar.getLoggoutButton().click();
     });
 

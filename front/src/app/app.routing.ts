@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';  
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { AuthGuard } from './modules/Auth';
+import { AuthGuard, CallbackComponent } from './modules/Auth';
 
 import { HomeComponent } from './pages/home/home.component';
 import { SigninComponent } from './pages/signin/signin.component';
@@ -11,12 +11,12 @@ import { SettingsComponent } from './pages/settings/settings.component';
 
 
 const routes: Routes = [
-  {path: '', component: HomeComponent}, // load the home route by default
-  {path: 'home', component: HomeComponent},
-  {path: 'signup', component: SignupComponent},
-  {path: 'signup/:social', component: SignupComponent},
-  {path: 'signin', component: SigninComponent},
-  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],}
+  { path: '', component: HomeComponent }, // load the home route by default
+  { path: 'home', component: HomeComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'callback', component: CallbackComponent },
+  { path: 'signin', component: SigninComponent },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
@@ -25,4 +25,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export const routingComponents = [NavbarComponent, HomeComponent, SigninComponent, SignupComponent, SettingsComponent];  
+export const routingComponents = [NavbarComponent, HomeComponent, SigninComponent, SignupComponent, SettingsComponent, CallbackComponent];

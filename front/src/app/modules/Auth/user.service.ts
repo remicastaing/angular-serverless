@@ -1,34 +1,32 @@
-import { Injectable } from '@angular/core';
-import { APIService } from './api.service';
+import { Injectable, Inject } from '@angular/core';
 import { User } from './user.model';
 import 'rxjs/add/operator/map';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
+import { UserActions } from './user.actions';
+
+import { NgRedux } from '@angular-redux/store';
+import { IAppState } from '../Store/app.reducer';
+
 @Injectable()
 export class UserService {
 
-  constructor(private api: APIService, private apollo: Apollo) {
-
-  }
-
-  getMe2() {
-    return this.api.get('/api/users/me').map((_res) => {
-      const res = _res.json();
-      return new User(res.id, res.name, res.email, res.role);
-    });
+  constructor(private apollo: Apollo, private ngRedux: NgRedux<IAppState>) {
   }
 
   getMe() {
-    console.log("get me through graphql")
-
-    return this.apollo.use('auth').watchQuery<UserQueryResponse>({ query: getMeQuery })
+    return this.apollo.use('auth').watchQuery<UserQueryResponse>({ fetchPolicy : 'network-only', query: getMeQuery })
       .map((data) => {
-        console.log(data.data);
-        return new User(data.data.me.id, data.data.me.name, data.data.me.email, data.data.me.role);
+        const user = new User(data.data.me.id, data.data.me.name, data.data.me.email, data.data.me.role);
+        this.ngRedux.dispatch(UserActions.setCurrentUser(user));
+        return user;
       });
   }
 
+  logout() {
+    this.ngRedux.dispatch(UserActions.setCurrentUser(null));
+  }
 
 }
 
@@ -45,9 +43,9 @@ const getMeQuery = gql`
   }`;
 
 interface UserQueryResponse {
-  me
   id;
   name;
   email;
   role;
-};
+  me;
+}

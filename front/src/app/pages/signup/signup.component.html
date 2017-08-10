@@ -11,9 +11,9 @@
 
           <label for="name" class="col-sm-2 col-form-label">Name</label>
           <div class="col-sm-10">
-            <input type="text" name="name" id="name" class="form-control" [formControl]="name"/>
-            <div class="form-control-feedback" *ngIf="name.hasError('required') && name.touched" >
-               Please enter a name.
+            <input type="text" name="name" id="name" class="form-control" [formControl]="name" />
+            <div class="form-control-feedback" *ngIf="name.hasError('required') && name.touched">
+              Please enter a name.
             </div>
           </div>
         </div>
@@ -22,12 +22,12 @@
 
           <label for="email" class="col-sm-2 col-form-label">Email</label>
           <div class="col-sm-10">
-            <input type="text" name="email" id="email" class="form-control" [formControl]="email"/>
-            <div class="form-control-feedback" *ngIf="email.hasError('required') && email.touched" >
-               Please enter an email.
+            <input type="text" name="email" id="email" class="form-control" [formControl]="email" />
+            <div class="form-control-feedback" *ngIf="email.hasError('required') && email.touched">
+              Please enter an email.
             </div>
-            <div class="form-control-feedback" *ngIf="email.hasError('pattern') && !email.hasError('required')  && email.touched" >
-               Email is invalid.
+            <div class="form-control-feedback" *ngIf="email.hasError('pattern') && !email.hasError('required')  && email.touched">
+              Email is invalid.
             </div>
           </div>
         </div>
@@ -36,12 +36,12 @@
 
           <label for="password" class="col-sm-2 col-form-label">Password</label>
           <div class="col-sm-10">
-            <input type="password" name="password" id="password" class="form-control" [formControl]="password"/>
-            <div class="form-control-feedback" *ngIf="password.hasError('required') && password.touched" >
-               Please enter a password.
+            <input type="password" name="password" id="password" class="form-control" [formControl]="password" />
+            <div class="form-control-feedback" *ngIf="password.hasError('required') && password.touched">
+              Please enter a password.
             </div>
-            <div class="form-control-feedback" *ngIf="password.hasError('minlength') && password.touched" >
-               Password should have a least 3 characters.
+            <div class="form-control-feedback" *ngIf="password.hasError('minlength') && password.touched">
+              Password should have a least 3 characters.
             </div>
           </div>
         </div>
@@ -49,15 +49,15 @@
 
           <label for="confirm" class="col-sm-2 col-form-label">Confirm password</label>
           <div class="col-sm-10">
-            <input type="password" name="confirm" id="confirm" class="form-control" [formControl]="confirm"/>
-            <div class="form-control-feedback" *ngIf="confirm.hasError('required') && confirm.touched" >
-               Please enter a confirm.
+            <input type="password" name="confirm" id="confirm" class="form-control" [formControl]="confirm" />
+            <div class="form-control-feedback" *ngIf="confirm.hasError('required') && confirm.touched">
+              Please enter a confirm.
             </div>
-            <div class="form-control-feedback" *ngIf="confirm.hasError('minlength') && confirm.touched" >
-               Password should have a least 3 characters.
+            <div class="form-control-feedback" *ngIf="confirm.hasError('minlength') && confirm.touched">
+              Password should have a least 3 characters.
             </div>
-            <div class="form-control-feedback" *ngIf="userForm.hasError('nomatch') && confirm.touched" >
-               Password should match.
+            <div class="form-control-feedback" *ngIf="userForm.hasError('nomatch') && confirm.touched">
+              Password should match.
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@
           <p class="form-control-feedback">{{ errors.signup }}</p>
         </div>
 
-        <div class = "float-sm-right">
+        <div class="float-sm-right">
           <button class="btn btn-outline-primary" type="submit" [disabled]="!userForm.valid">
             Sign up
           </button>
@@ -81,9 +81,9 @@
     </div>
   </div>
   <hr>
-          <div class="row">
-          <div class="col-sm-4 col-md-3">
-            <oauth-buttons classes="btn-block"></oauth-buttons>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-sm-4 col-md-3">
+      <app-oauth-buttons classes="btn-block"></app-oauth-buttons>
+    </div>
+  </div>
 </div>
