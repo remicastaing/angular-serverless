@@ -24,6 +24,8 @@ import { NgReduxModule } from '@angular-redux/store';
 
 import { StoreModule } from './modules/Store/store.module';
 
+import { GraphqlService } from './modules/graphql/graphql.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +45,7 @@ import { StoreModule } from './modules/Store/store.module';
     StoreModule,
     ApolloModule.forRoot(provideClients)
   ],
-  providers: [],
+  providers: [GraphqlService],
   bootstrap: [AppComponent]
 })
 

@@ -9,7 +9,7 @@ import { SECRETS } from '../../secrets';
 
 
 
-fdescribe('E2E Test of Signup Page', () => {
+describe('E2E Test of Signup Page', () => {
   let page: SignupPage;
   let fbpage: FacebookPage;
   let navbar: Navbar;
@@ -21,7 +21,6 @@ fdescribe('E2E Test of Signup Page', () => {
     fbTestUsers.fetchAccessToken((err, res) => {
       fbTestUsers.create({}, (error, result) => {
         user = result;
-        console.log(user);
         fbTestUsers.getUserInfo(user, (err, res) => {
           user.name = res.name;
           done();

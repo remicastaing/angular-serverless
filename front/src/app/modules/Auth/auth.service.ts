@@ -34,7 +34,7 @@ export class AuthService {
   private getCurrentUser() {
     return this.userService
       .getMe()
-      .subscribe((res) => {
+      .then((res) => {
       },
       (res) => {
         this.logout();
