@@ -1,4 +1,4 @@
-import { ApolloClient } from 'apollo-client';
+
 
 import {
     Reducer,
@@ -12,21 +12,15 @@ export * from '../Auth/user.reducer';
 
 
 
-const apollo = new ApolloClient();
-
-
 export interface IAppState {
     currentUser: IUserState;
-    apollo?: any;
 }
 
 export const appInitialState = {
     currentUser: null,
-    apollo: null
 };
 
 
 export const rootReducer: Reducer<IAppState> = combineReducers<IAppState>({
-    currentUser: UserReducer,
-    apollo: apollo.reducer()
+    currentUser: UserReducer
 });
