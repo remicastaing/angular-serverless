@@ -31,9 +31,9 @@ export class HomePage {
 
   waitForElements(elementArrayFinder) {
     return function () {
-        return elementArrayFinder.count().then(function (actualCount) {
-            return actualCount > 0;  // or <= instead of ===, depending on the use case
-        });
+      return elementArrayFinder.count().then(function (actualCount) {
+        return actualCount > 0;  // or <= instead of ===, depending on the use case
+      });
     };
-};
+  }
 }

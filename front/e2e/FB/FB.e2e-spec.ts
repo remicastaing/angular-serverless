@@ -21,8 +21,8 @@ describe('E2E Test of Signup Page', () => {
     fbTestUsers.fetchAccessToken((err, res) => {
       fbTestUsers.create({}, (error, result) => {
         user = result;
-        fbTestUsers.getUserInfo(user, (err, res) => {
-          user.name = res.name;
+        fbTestUsers.getUserInfo(user, (err2, res2) => {
+          user.name = res2.name;
           done();
         });
         // done();

@@ -91,6 +91,7 @@ describe('E2E Test of Settings Page', () => {
             email: name + '@test.com',
             password: name
         });
+        signin.waitForErrorField('Something went wrong, please try again.');
         expect<any>(signin.getErrorField().getText()).toBe('Something went wrong, please try again.');
     });
 

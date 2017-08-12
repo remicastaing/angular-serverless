@@ -2,7 +2,7 @@ import { SigninPage } from './signin.po';
 import { Navbar } from '../components/navbar.po';
 import { browser } from 'protractor';
 
-describe('E2E Test of Signin Page', () => {
+fdescribe('E2E Test of Signin Page', () => {
   let page: SigninPage;
   let navbar: Navbar;
   let user;
@@ -41,6 +41,7 @@ describe('E2E Test of Signin Page', () => {
     page.getEmailField().sendKeys('test@test.com');
     page.getPasswordfield().sendKeys('false');
     page.getSigninButton().click();
+    page.waitForErrorField('Something went wrong, please try again.');
     expect<any>(page.getErrorField().getText()).toBe('Something went wrong, please try again.');
   });
 
