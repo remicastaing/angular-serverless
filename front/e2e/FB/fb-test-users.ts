@@ -80,8 +80,8 @@ export class FBTestUsers {
         password,
         name
       };
-      request.post({ url, qs, json: true }, (err, response, body) => {
-        callback(err, body);
+      request.post({ url, qs, json: true }, (err2, response, body) => {
+        callback(err2, body);
       });
     });
   }

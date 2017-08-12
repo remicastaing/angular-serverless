@@ -16,13 +16,11 @@ import { AppRoutingModule, routingComponents } from './app.routing';
 import { AuthModule} from './modules/Auth';
 import { ProfileComponent} from './components/profile/profile.component';
 
-import { ApolloModule } from 'apollo-angular';
-
-import { provideClients } from './apollo.clients';
-
 import { NgReduxModule } from '@angular-redux/store';
 
 import { StoreModule } from './modules/Store/store.module';
+
+import { GraphqlService } from './modules/graphql/graphql.service';
 
 @NgModule({
   declarations: [
@@ -41,9 +39,8 @@ import { StoreModule } from './modules/Store/store.module';
     AuthModule.forRoot(),
     NgReduxModule,
     StoreModule,
-    ApolloModule.forRoot(provideClients)
   ],
-  providers: [],
+  providers: [GraphqlService],
   bootstrap: [AppComponent]
 })
 

@@ -6,6 +6,14 @@ import { NgRedux } from '@angular-redux/store';
 import { IAppState, getCurrentUser } from '../Store/app.reducer';
 import { HttpClient } from '@angular/common/http';
 
+interface AuthResponse {
+  token: string;
+}
+
+interface FBIDResponse {
+  client_id: string;
+}
+
 @Injectable()
 export class AuthService {
 
@@ -34,7 +42,7 @@ export class AuthService {
   private getCurrentUser() {
     return this.userService
       .getMe()
-      .subscribe((res) => {
+      .then((res) => {
       },
       (res) => {
         this.logout();
@@ -50,7 +58,7 @@ export class AuthService {
 
   createUser(name, email, password) {
     return this.http
-      .post(
+      .post<AuthResponse>(
       '/api/users/',
       JSON.stringify({
         name: name,
@@ -58,7 +66,7 @@ export class AuthService {
         password: password
       }))
       .map((res) => {
-        localStorage.setItem('auth_token', res['token']);
+        localStorage.setItem('auth_token', res.token);
         this.getCurrentUser();
         return true;
       });
@@ -78,19 +86,21 @@ export class AuthService {
     return localStorage.getItem('auth_token');
   }
 
+
+
   getFacebookID() {
     return this.http
-      .get('/api/auth/facebook')
+      .get<FBIDResponse>('/api/auth/facebook')
       .map((res) => {
-        return res['client_id'];
+        return res.client_id;
       });
   }
 
   createFBUser(token, redirect_uri) {
     return this.http
-      .get(`/api/auth/facebook?code=${token}&redirect_uri=${redirect_uri}`)
+      .get<AuthResponse>(`/api/auth/facebook?code=${token}&redirect_uri=${redirect_uri}`)
       .map((res) => {
-        localStorage.setItem('auth_token', res['token']);
+        localStorage.setItem('auth_token', res.token);
         this.getCurrentUser();
         return true;
       });

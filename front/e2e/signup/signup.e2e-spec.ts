@@ -50,6 +50,8 @@ describe('E2E Test of Signup Page', () => {
     };
     page.signup(user);
 
+    page.waitForErrorField('Email already exists');
+
     expect<any>(page.getErrorField().getText()).toBe('Email already exists');
   });
 

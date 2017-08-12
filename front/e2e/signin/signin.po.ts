@@ -1,4 +1,4 @@
-import { browser, element, by } from 'protractor';
+import { browser, element, by, ExpectedConditions } from 'protractor';
 
 export class SigninPage {
   navigateTo() {
@@ -19,6 +19,10 @@ export class SigninPage {
 
   getErrorField() {
     return element(by.css('.form-group.has-danger')).$('.form-control-feedback');
+  }
+
+  waitForErrorField(text) {
+    browser.wait(ExpectedConditions.textToBePresentInElement(this.getErrorField(), text), 2000);
   }
 
   signin(user) {

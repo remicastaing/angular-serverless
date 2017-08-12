@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+
+import { GraphqlService } from '../../modules/graphql/graphql.service';
 
 const awesomeThingsQuery = gql`
   {
@@ -14,10 +14,6 @@ const awesomeThingsQuery = gql`
     }
   }`;
 
-interface QueryResponse {
-  things;
-}
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -27,13 +23,12 @@ export class HomeComponent implements OnInit {
 
   public awesomeThings: Observable<any>;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private graphql: GraphqlService) { }
 
   ngOnInit() {
-    this.awesomeThings = this.apollo.watchQuery<QueryResponse>({ query: awesomeThingsQuery })
-      .map((data) => {
-        return data.data.things;
-      });
+    this.awesomeThings = this.graphql.fetch({ query: awesomeThingsQuery }).then((results) => {
+      return results.data.things;
+    });
   }
 }
 
