@@ -18,7 +18,7 @@ export class SigninPage {
   }
 
   getErrorField() {
-    return element(by.css('.form-group.has-danger')).$('.form-control-feedback');
+    return element(by.id('error-message'));
   }
 
   waitForErrorField(text) {

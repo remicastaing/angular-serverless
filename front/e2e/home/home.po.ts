@@ -6,7 +6,7 @@ export class HomePage {
   }
 
   getFeatureCards() {
-    return element.all(by.css('.card'));
+    return element.all(by.css('div[id^=card]'));
   }
 
   getFirstFeatureCard() {

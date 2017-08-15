@@ -26,7 +26,7 @@ export class SignupPage {
   }
 
   getErrorField() {
-    return element(by.css('.form-group.has-danger')).$('.form-control-feedback');
+    return element(by.id('error-message'));
   }
 
   waitForErrorField(text) {
@@ -34,7 +34,7 @@ export class SignupPage {
   }
 
   getFBButton() {
-    return element(by.css('.btn.btn-outline-primary.btn-social.btn-facebook'));
+    return element(by.partialButtonText('Facebook'));
   }
 
   signup(user) {

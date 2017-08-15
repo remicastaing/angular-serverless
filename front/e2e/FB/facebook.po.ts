@@ -44,7 +44,7 @@ export class FacebookPage {
   }
 
   waitForConfirmButtonClickable() {
-    browser.wait(ExpectedConditions.elementToBeClickable(this.getConfirmButton()), 5000);
+    browser.wait(ExpectedConditions.elementToBeClickable(this.getConfirmButton()), 10000);
   }
 
   clickConfirmButton() {

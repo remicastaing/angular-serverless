@@ -9,7 +9,7 @@ import { SECRETS } from '../../secrets';
 
 
 
-describe('E2E Test of Signup Page', () => {
+fdescribe('E2E Test of Signup Page', () => {
   let page: SignupPage;
   let fbpage: FacebookPage;
   let navbar: Navbar;
@@ -66,6 +66,7 @@ describe('E2E Test of Signup Page', () => {
                     navbar.waitForVisibleProfile();
                     expect<any>(navbar.getProfilNameElement().isDisplayed()).toBe(true);
                     expect<any>(navbar.getProfilNameElement().getText()).toBe(user.name);
+                    navbar.getLoggoutButton().click();
                   });
 
                 });
