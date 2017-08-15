@@ -3,16 +3,18 @@ import { User } from './user.model';
 
 import gql from 'graphql-tag';
 
-import { UserActions } from './user.actions';
-
-import { NgRedux } from '@angular-redux/store';
-import { IAppState } from '../Store/app.reducer';
 import { GraphqlService } from '../../modules/graphql/graphql.service';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/last';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../reducers';
+import * as UserActions from './user.actions';
 
 @Injectable()
 export class UserService {
 
-  constructor(private graphql: GraphqlService,  private ngRedux: NgRedux<IAppState>) {
+  constructor(private graphql: GraphqlService,  private store: Store<fromRoot.State>) {
   }
 
   getMe() {
@@ -20,13 +22,14 @@ export class UserService {
     return this.graphql.authFetch({query: getMeQuery})
     .then((data) => {
         const user = new User(data.data.me.id, data.data.me.name, data.data.me.email, data.data.me.role);
-        this.ngRedux.dispatch(UserActions.setCurrentUser(user));
+        this.store.dispatch(new UserActions.SetCurrentUserAction(user));
         return user;
       });
   }
 
   logout() {
-    this.ngRedux.dispatch(UserActions.setCurrentUser(null));
+    this.store.dispatch(new UserActions.RemoveCurrentUserAction);
+
   }
 
 }

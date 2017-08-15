@@ -4,9 +4,8 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, Htt
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { UserActions } from './user.actions';
-import { IAppState } from '../Store/app.reducer';
-import { NgRedux } from '@angular-redux/store';
+import { SetCurrentUserAction } from './user.actions';
+
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -33,7 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
 @Injectable()
 export class AuthResponseInterceptor implements HttpInterceptor {
 
-    constructor(private router: Router, private ngRedux: NgRedux<IAppState>) { }
+    constructor(private router: Router) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -45,7 +44,7 @@ export class AuthResponseInterceptor implements HttpInterceptor {
             if (err instanceof HttpErrorResponse) {
                 if (err.status === 401) {
                     localStorage.removeItem('auth_token');
-                    this.ngRedux.dispatch(UserActions.setCurrentUser(null));
+                    // this.ngRedux.dispatch(UserActions.setCurrentUser(null));
                     console.log('logout!!!!');
                     this.router.navigate(['home']);
                 }

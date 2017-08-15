@@ -6,8 +6,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { AuthInterceptor, AuthResponseInterceptor } from './authInterceptor';
 import { UserService } from './user.service';
+import { User } from './user.model';
 import { OauthButtonsComponent } from './oauth-buttons/oauth-buttons.component';
-import { UserReducer, IUserState } from './user.reducer';
+
 
 import { AuthGuard } from './auth.guard';
 import { CallbackComponent } from './callback/callback.component';
@@ -35,4 +36,4 @@ export class AuthModule {
 export const authComponents = [OauthButtonsComponent];
 
 
-export { AuthService, UserService, AuthGuard, OauthButtonsComponent, CallbackComponent, UserReducer, IUserState };
+export { AuthService, UserService, AuthGuard, OauthButtonsComponent, CallbackComponent, User };
