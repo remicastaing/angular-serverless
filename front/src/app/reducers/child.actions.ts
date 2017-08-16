@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { User } from './user.model';
+import { User } from '../modules/Auth';
 
 
 export const SET_CURRENT_USER = '[User] Set Current';

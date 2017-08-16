@@ -19,7 +19,7 @@ export class Navbar {
   }
 
   waitForVisibleProfile() {
-    browser.wait(ExpectedConditions.presenceOf(this.getProfilNameElement()), 5000);
+    browser.wait(ExpectedConditions.presenceOf(this.getProfilNameElement()), 10000);
   }
 
   waitForVisibleSettings() {

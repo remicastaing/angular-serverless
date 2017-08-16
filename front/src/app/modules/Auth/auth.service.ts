@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
-import 'rxjs/add/operator/map';
-import { NgRedux } from '@angular-redux/store';
-import { IAppState, getCurrentUser } from '../Store/app.reducer';
 import { HttpClient } from '@angular/common/http';
+
+
+import { User } from './user.model';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../reducers';
 
 interface AuthResponse {
   token: string;
@@ -17,11 +20,18 @@ interface FBIDResponse {
 @Injectable()
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router, private userService: UserService, private store: NgRedux<IAppState>) {
+  private currentUser: User;
+
+  constructor(private http: HttpClient, private router: Router, private userService: UserService,
+    private store: Store<fromRoot.State>) {
 
     if (!!localStorage.getItem('auth_token')) {
       this.getCurrentUser();
     }
+
+    this.store.select(fromRoot.getCurrentUser).subscribe((user) => {
+      this.currentUser = user;
+    });
 
   }
 
@@ -74,10 +84,8 @@ export class AuthService {
 
   changePassword(oldPassword, newPassword) {
 
-    const user = getCurrentUser(this.store.getState());
-
     return this.http
-      .put(`/api/users/${user.id}/password`,
+      .put(`/api/users/${this.currentUser.id}/password`,
       JSON.stringify({ oldPassword, newPassword }));
 
   }

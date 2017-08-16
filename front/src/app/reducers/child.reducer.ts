@@ -1,31 +1,22 @@
 import { createSelector } from 'reselect';
-import {User} from './user.model';
 
-import * as user from './user.actions';
+
+import * as child from './child.actions';
 
 
 export interface State {
-  currentUser: User;
+  children: [any];
 }
 
 export const initialState: State = {
-  currentUser: null,
+  children: [null],
 };
 
-export function reducer(state = initialState, action: user.Actions): State {
+export function reducer(state = initialState, action: child.Actions): State {
   switch (action.type) {
-    case user.SET_CURRENT_USER: {
-        return {
-          currentUser: action.payload,
-        };
 
-    }
 
-    case user.REMOVE_CURRENT_USER: {
-        return {
-            currentUser: null,
-        };
-    }
+
 
     default: {
       return state;
@@ -42,10 +33,10 @@ export function reducer(state = initialState, action: user.Actions): State {
  * use-case.
  */
 
-export const getUserState = (state): State => {
-  return state;
+export const getChildrenState = (state): State => {
+  return state.currentUser;
 };
 
-export const getCurrentUser = createSelector(
-  getUserState,
-  (state: State) => state.currentUser);
+export const getChildren = createSelector(
+  getChildrenState,
+  (state: State) => state.children);

@@ -2,7 +2,7 @@ import { SignupPage } from './signup.po';
 import { Navbar } from '../components/navbar.po';
 import { browser } from 'protractor';
 
-describe('E2E Test of Signup Page', () => {
+fdescribe('E2E Test of Signup Page', () => {
   let page: SignupPage;
   let navbar: Navbar;
 

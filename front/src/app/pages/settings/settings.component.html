@@ -7,7 +7,7 @@
     <div class="col-sm-12">
       <form class="form" [formGroup]="changePasswordForm" (submit)="onSubmit(changePasswordForm.value)"  [ngClass]="{'has-danger':errors.form}" novalidate>
 
-        <div class="alert alert-success" role="alert" *ngIf="message">
+        <div id="success" class="alert alert-success" role="alert" *ngIf="message">
           {{message}}
         </div>
 

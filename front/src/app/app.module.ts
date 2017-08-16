@@ -16,11 +16,11 @@ import { AppRoutingModule, routingComponents } from './app.routing';
 import { AuthModule} from './modules/Auth';
 import { ProfileComponent} from './components/profile/profile.component';
 
-import { NgReduxModule } from '@angular-redux/store';
-
-import { StoreModule } from './modules/Store/store.module';
-
 import { GraphqlService } from './modules/graphql/graphql.service';
+
+import { reducer } from './reducers';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -37,8 +37,8 @@ import { GraphqlService } from './modules/graphql/graphql.service';
     AppRoutingModule,
     NgbModule.forRoot(),
     AuthModule.forRoot(),
-    NgReduxModule,
-    StoreModule,
+    StoreModule.provideStore(reducer),
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
   ],
   providers: [GraphqlService],
   bootstrap: [AppComponent]

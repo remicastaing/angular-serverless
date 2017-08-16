@@ -23,7 +23,7 @@
 <div class="container">
 
   <div class="card-group">
-    <div class="card" *ngFor="let thing  of (awesomeThings | async)">
+    <div class="card" *ngFor="let thing  of (awesomeThings | async); index as i" id="card{{i}}">
       <img class="card-img-top" src="{{thing.img}}" alt="Card image cap">
       <div class="card-block">
         <h3 class="card-title">{{thing.name}}</h3>

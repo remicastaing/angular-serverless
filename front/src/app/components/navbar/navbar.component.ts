@@ -4,7 +4,8 @@ import { AuthService } from '../../modules/Auth';
 
 
 import { Observable } from 'rxjs/Observable';
-import { select } from '@angular-redux/store';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../reducers';
 
 @Component({
   selector: 'app-navbar',
@@ -14,10 +15,11 @@ import { select } from '@angular-redux/store';
 })
 export class NavbarComponent implements OnInit {
   public isNavbarCollapsed = true;
-  @select(['currentUser', 'currentUser']) currentUser: Observable<User>;
 
-  constructor(private auth: AuthService) {
+  currentUser: Observable<User>;
 
+  constructor(private auth: AuthService, private store: Store<fromRoot.State>) {
+     this.currentUser = store.select(fromRoot.getCurrentUser);
   }
 
   logout() {

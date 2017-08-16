@@ -22,7 +22,7 @@ export class SettingsPage {
   }
 
   getSuccessMessage() {
-    return element(by.className('alert-success'));
+    return element(by.id('success'));
   }
 
   waitForSuccessMessage() {
