@@ -11,7 +11,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }, // load the home route by default
+  { path: '', pathMatch: 'full', component: HomeComponent }, // load the home route by default
   { path: 'home', component: HomeComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'callback', component: CallbackComponent },

@@ -4,7 +4,7 @@ import {
   FormsModule,
   ReactiveFormsModule
 } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+
 import { HttpClientModule } from '@angular/common/http';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -31,14 +31,13 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     AuthModule.forRoot(),
-    StoreModule.provideStore(reducer),
-    StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    StoreModule.forRoot(reducer),
+    //StoreDevtoolsModule.instrumentOnlyWithExtension(),
   ],
   providers: [GraphqlService],
   bootstrap: [AppComponent]

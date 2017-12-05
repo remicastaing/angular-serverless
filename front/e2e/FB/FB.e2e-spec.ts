@@ -9,7 +9,7 @@ import { SECRETS } from '../../secrets';
 
 
 
-fdescribe('E2E Test of Signup Page', () => {
+describe('E2E Test of Signup Page', () => {
   let page: SignupPage;
   let fbpage: FacebookPage;
   let navbar: Navbar;
