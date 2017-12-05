@@ -36,8 +36,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AppRoutingModule,
     NgbModule.forRoot(),
     AuthModule.forRoot(),
-    StoreModule.provideStore(reducer),
-    StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    StoreModule.forRoot(reducer),
+    //StoreDevtoolsModule.instrumentOnlyWithExtension(),
   ],
   providers: [GraphqlService],
   bootstrap: [AppComponent]

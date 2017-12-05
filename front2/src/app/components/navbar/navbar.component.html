@@ -1,0 +1,36 @@
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded container">
+	<div>
+		<button class="navbar-toggler hidden-lg-up" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-controls="exCollapsingNavbar2"
+		 aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+		<a class="navbar-brand" routerLink="">
+    <img src="/assets/flash.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+    Angular-Serverless
+  </a>
+	</div>
+	<div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarText">
+		<ul class="nav navbar-nav float-xs-left">
+			<li class="nav-item active">
+				<a class="nav-link" routerLink="home" RouterLinkActive="active">Home <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item" *ngIf="!(currentUser | async)">
+				<a class="nav-link" routerLink="signin" RouterLinkActive="active">Login</a>
+			</li>
+			<li class="nav-item" *ngIf="!(currentUser | async)">
+				<a class="nav-link" routerLink="signup" RouterLinkActive="active">Sign Up</a>
+			</li>
+		</ul>
+		<ul class="nav navbar-nav ml-auto">
+			<li class="nav-item" *ngIf="(currentUser | async)">
+				<app-navbar-profile class="nav-link" [profile]="currentUser | async"></app-navbar-profile>
+			</li>
+			<li class="nav-item" *ngIf="(currentUser | async)">
+				<a class="nav-link" routerLink="settings" RouterLinkActive="active">Settings</a>
+			</li>
+			<li class="nav-item" *ngIf="(currentUser | async)">
+				<a class="nav-link" routerLink="home" (click)="logout()">Logout</a>
+			</li>
+		</ul>
+	</div>
+</nav>

@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Login</h1>
+      <p>Accounts are reset on server restart from <code>server/config/seed.js</code>. Default account is <code>test@example.com</code>        / <code>test</code></p>
+      <p>Admin account is <code>admin@example.com</code> / <code>admin</code></p>
+    </div>
+    <div class="col-sm-12">
+      <form class="form" [formGroup]="signinForm" (submit)="onSubmit(signinForm)" [ngClass]="{'has-danger':errors.login}" novalidate>
+
+        <div class="form-group row" [ngClass]="{'has-success': email.valid, 'has-danger': !email.valid && email.touched }">
+
+          <label for="email" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            <input type="text" name="email" id="email" class="form-control" [formControl]="email" />
+            <div class="form-control-feedback" *ngIf="email.hasError('required') && email.touched">
+              Please enter an email.
+            </div>
+            <div class="form-control-feedback" *ngIf="email.hasError('pattern') && !email.hasError('required')  && email.touched">
+              Email is invalid.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row" [ngClass]="{'has-success': password.valid, 'has-danger': !password.valid && password.touched }">
+
+          <label for="password" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-10">
+            <input type="text" name="password" id="password" class="form-control" [formControl]="password" />
+            <div class="form-control-feedback" *ngIf="password.hasError('required') && password.touched">
+              Please enter a password.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group has-danger">
+          <p id="error-message" class="form-control-feedback">{{ errors.login }}</p>
+        </div>
+
+        <div class="float-sm-right">
+          <button class="btn btn-outline-primary" type="submit" [disabled]="!signinForm.valid">
+            Login
+          </button>
+          <a class="btn btn-default btn-lg btn-login" routerLink="signup">
+            Register
+          </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-4 col-md-3">
+      <app-oauth-buttons classes="btn-block"></app-oauth-buttons>
+    </div>
+  </div>
+</div>
