@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { User } from './user.model';
 import { Observable } from 'rxjs/Observable';
+import { map} from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
 
@@ -42,11 +43,11 @@ export class AuthService {
       '/api/auth/local',
       JSON.stringify({ email, password })
       )
-      .map(res => {
+      .pipe(map(res => {
         localStorage.setItem('auth_token', res['token']);
         this.getCurrentUser();
         return true;
-      });
+      }));
   }
 
   private getCurrentUser() {
@@ -75,11 +76,11 @@ export class AuthService {
         email: email,
         password: password
       }))
-      .map((res) => {
+      .pipe(map((res) => {
         localStorage.setItem('auth_token', res.token);
         this.getCurrentUser();
         return true;
-      });
+      }));
   }
 
   changePassword(oldPassword, newPassword) {
@@ -99,19 +100,19 @@ export class AuthService {
   getFacebookID() {
     return this.http
       .get<FBIDResponse>('/api/auth/facebook')
-      .map((res) => {
+      .pipe(map((res) => {
         return res.client_id;
-      });
+      }));
   }
 
   createFBUser(token, redirect_uri) {
     return this.http
       .get<AuthResponse>(`/api/auth/facebook?code=${token}&redirect_uri=${redirect_uri}`)
-      .map((res) => {
+      .pipe(map((res) => {
         localStorage.setItem('auth_token', res.token);
         this.getCurrentUser();
         return true;
-      });
+      }));
 
 
 

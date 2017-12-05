@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { AuthGuard, CallbackComponent } from './modules/Auth';
+import { CallbackComponent } from './modules/Auth';
+import { AuthGuard } from './modules/Auth/auth.guard';
 
 import { HomeComponent } from './pages/home/home.component';
 import { SigninComponent } from './pages/signin/signin.component';

@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { GraphqlService } from '../../modules/graphql/graphql.service';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/last';
+
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
 import * as UserActions from './user.actions';

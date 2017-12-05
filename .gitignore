@@ -1,3 +1,6 @@
 .serverless
 yarn.lock
 /back/secrets.yml
+package-lock.json
+stats.json
+*.code-workspace

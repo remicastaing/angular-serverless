@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { User } from './user.model';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
@@ -18,13 +19,13 @@ export class AuthGuard implements CanActivate {
 
     canActivate() {
 
-        return this.currentUser.map(
+        return this.currentUser.pipe(map(
             res => {
                 if (res) {
                     return true;
                 } else {
                     this.router.navigate(['home']);
                 }
-            });
+            }));
     }
 }

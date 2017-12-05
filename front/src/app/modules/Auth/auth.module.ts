@@ -36,4 +36,4 @@ export class AuthModule {
 export const authComponents = [OauthButtonsComponent];
 
 
-export { AuthService, UserService, AuthGuard, OauthButtonsComponent, CallbackComponent, User };
+export { AuthGuard, AuthService, UserService,  OauthButtonsComponent, CallbackComponent, User };

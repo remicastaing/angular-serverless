@@ -10,10 +10,12 @@ import { HttpClientModule } from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
+
+import { AuthModule} from './modules/Auth';
 import { AppRoutingModule, routingComponents } from './app.routing';
 
 
-import { AuthModule} from './modules/Auth';
+
 import { ProfileComponent} from './components/profile/profile.component';
 
 import { GraphqlService } from './modules/graphql/graphql.service';

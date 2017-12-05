@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { map} from 'rxjs/operators';
 
 import { SetCurrentUserAction } from './user.actions';
 
@@ -36,7 +36,7 @@ export class AuthResponseInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        return next.handle(req).map((event: HttpEvent<any>) => {
+        return next.handle(req).pipe(map((event: HttpEvent<any>) => {
             if (event instanceof HttpResponse) {
                 return event;
             }
@@ -49,6 +49,6 @@ export class AuthResponseInterceptor implements HttpInterceptor {
                     this.router.navigate(['home']);
                 }
             }
-        });
+        }));
     }
 }
